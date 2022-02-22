@@ -1,5 +1,5 @@
 from sqlite3 import DatabaseError
-from DoggyDetector.utils import category_list, create_training_data
+from DoggyDetector.data import category_list, create_training_data
 
 
 
