@@ -31,8 +31,12 @@ def breed_list(DATADIR = "../raw_data/Images"):
 
 def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="../raw_data/Images" ):
     '''
-    Creates a training data from the images within the folders located in DATADIR.
-    CATEGORIES taken as the index of the names of the folders.
+    Creates a training data
+
+    DATADIR: The directory containing the raw data
+    CATEGORIES: taken as the index of the names of the folders.
+    IMG_SIZE: Outputted image size. (IMG_SIZE by IMG_SIZE)
+
     Returns X and y as a shuffled list of the data and labels.
     NOTE: y has not been one hot encoded.
     '''
