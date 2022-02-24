@@ -5,7 +5,9 @@ import os
 import cv2
 import random
 import pickle
-
+"""
+Functions related primairy to the loading and saving of data
+"""
 def category_list(DATADIR= "../raw_data/Images"):
     """
     Creates a category list based on the folders in [DATADIR]
@@ -87,11 +89,28 @@ def data_to_pickle(X, y, pickle_path="./data/Pickle Files/"):
     pickle_out.close()
 
 
+def data_from_pickle(pickle_path="./data/Pickle Files/"):
+    """
+    Takes data from the pickle files and loads them as X and y values
+    """
+
+    #Load the pickle files
+    pickle_in = open(pickle_path + "X.pickle", "rb")
+    X = pickle.load(pickle_in)
+
+    pickle_in = open(pickle_path + "y.pickle", "rb")
+    y = pickle.load(pickle_in)
+
+    return X, y
+
+
+
+
 if __name__ == "__main__":
     # CATEGORIES = category_list()
     # X, y = create_training_data(CATEGORIES)
 
     #Continue to test this pickel dump
-    X = "hello"
-    y = "world"
-    data_to_pickle(X,y)
+    X, y = data_from_pickle()
+    print(X)
+    print(y)
