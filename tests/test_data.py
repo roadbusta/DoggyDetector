@@ -1,4 +1,6 @@
-from DoggyDetector.data import category_list, breed_list, create_training_data
+from DoggyDetector.data import category_list, breed_list, create_training_data, data_to_pickle
+import os
+import glob
 
 ### category_list tests ###
 def test_len_category_list():
@@ -22,9 +24,11 @@ def test_data_type_breed_list():
     assert type(breed[0]) == str
 
 ### Training data tests ###
+
 #Note that these tests take some time to validate,
 # consider commenting out this code in future builds
 # def test_len_RGB_create_training_data():
+
 #     #Check that X contains at contains image information
 #     CATEGORIES = category_list(DATADIR="raw_data/Images")
 #     (X, y) = create_training_data(CATEGORIES, DATADIR="raw_data/Images")
@@ -35,3 +39,23 @@ def test_data_type_breed_list():
 #     CATEGORIES = category_list(DATADIR="raw_data/Images")
 #     (X, y) = create_training_data(CATEGORIES, DATADIR="raw_data/Images")
 #     assert len(X[1][0]) > 0
+
+### Testing data to pickle ###
+
+def test_data_to_pickle():
+    pickle_path = "DoggyDetector/data/Pickle Files/Test/"
+
+    # Remove existing pickle files
+    files = os.listdir(pickle_path)
+    for item in files:
+        if item.endswith(".pickle"):
+            os.remove(os.path.join(pickle_path, item))
+
+    # Create pickle files
+    X = "test x"
+    y = "test y"
+    data_to_pickle(X, y, pickle_path)
+
+    # Check that there are existing files in the folder
+    pickle_files = pickle_path + "*.pickle"
+    assert len(glob.glob(pickle_files)) != 0

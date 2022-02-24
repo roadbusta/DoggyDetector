@@ -87,8 +87,6 @@ def data_to_pickle(X, y, pickle_path="./data/Pickle Files/"):
     pickle_out.close()
 
 
-
-
 if __name__ == "__main__":
     # CATEGORIES = category_list()
     # X, y = create_training_data(CATEGORIES)

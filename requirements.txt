@@ -1,6 +1,8 @@
 #Specific to this package
 matplotlib
 pickle
+glob
+os
 
 # packaging
 pip>=9
