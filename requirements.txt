@@ -1,5 +1,6 @@
 #Specific to this package
 matplotlib
+pickle
 
 # packaging
 pip>=9

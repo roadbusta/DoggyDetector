@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import cv2
 import random
+import pickle
 
 def category_list(DATADIR= "../raw_data/Images"):
     """
@@ -12,6 +13,7 @@ def category_list(DATADIR= "../raw_data/Images"):
     categories = os.listdir(DATADIR)
     categories.remove(".DS_Store")
     return categories
+
 
 def breed_list(DATADIR = "../raw_data/Images"):
     """
@@ -26,7 +28,7 @@ def breed_list(DATADIR = "../raw_data/Images"):
         breed = breed.title()
         breeds.append(breed)
 
-    return breeds
+    return breed
 
 
 def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="../raw_data/Images" ):
@@ -70,9 +72,28 @@ def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="../raw_data/Image
     return X, y
 
 
+def data_to_pickle(X, y, pickle_path="./data/Pickle Files/"):
+    """
+    Converts the data into pickle files for easier loading
+    in the future
+    """
+
+    pickle_out = open(pickle_path + "X.pickle", "wb")
+    pickle.dump(X, pickle_out)
+    pickle_out.close()
+
+    pickle_out = open(pickle_path + "y.pickle", "wb")
+    pickle.dump(y, pickle_out)
+    pickle_out.close()
 
 
 
 
-# if __name__ == "__main__":
-#     print(breed_list())
+if __name__ == "__main__":
+    # CATEGORIES = category_list()
+    # X, y = create_training_data(CATEGORIES)
+
+    #Continue to test this pickel dump
+    X = "hello"
+    y = "world"
+    data_to_pickle(X,y)
