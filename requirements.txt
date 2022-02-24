@@ -3,6 +3,10 @@ matplotlib
 pickle
 glob
 os
+tensorflow.keras
+tqdm
+keras
+math
 
 # packaging
 pip>=9
