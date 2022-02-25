@@ -30,7 +30,7 @@ def breed_list(DATADIR = "../raw_data/Images"):
         breed = breed.title()
         breeds.append(breed)
 
-    return breed
+    return breeds
 
 
 def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="../raw_data/Images" ):
@@ -113,6 +113,19 @@ def model_to_pickle(model, pickle_path="./data/Pickle Files/"):
     pickle_out = open(pickle_path + "model.pickle", "wb")
     pickle.dump(model, pickle_out)
     pickle_out.close()
+
+
+#Model from pickle
+def model_from_pickle(pickle_path="./data/Pickle Files/"):
+    """
+    Takes model from the pickle files and loads it
+    """
+
+    #Load the pickle files
+    pickle_in = open(pickle_path + "model.pickle", "rb")
+    model = pickle.load(pickle_in)
+
+    return model
 
 
 ### Not sure if a code needs to be developed for this or not
