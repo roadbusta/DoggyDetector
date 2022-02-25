@@ -104,13 +104,31 @@ def data_from_pickle(pickle_path="./data/Pickle Files/"):
     return X, y
 
 
+#Model to pickle
+def model_to_pickle(model, pickle_path="./data/Pickle Files/"):
+    """
+    Converts the model into pickle files for easier loading
+    in the future
+    """
+    pickle_out = open(pickle_path + "model.pickle", "wb")
+    pickle.dump(model, pickle_out)
+    pickle_out.close()
 
 
-if __name__ == "__main__":
-    # CATEGORIES = category_list()
-    # X, y = create_training_data(CATEGORIES)
+### Not sure if a code needs to be developed for this or not
 
-    #Continue to test this pickel dump
-    X, y = data_from_pickle()
-    print(X)
-    print(y)
+# Save files (?) Not sure if this is always required
+# np.save('bottleneck_features_train_inception.npy', train_i_bf)
+# np.save('bottleneck_features_val_inception.npy', val_i_bf)
+# np.save('bottleneck_features_test_inception.npy', test_i_bf)
+
+# # load the bottleneck features saved earlier
+# train_data = np.load('bottleneck_features_train_inception.npy')
+# val_data = np.load('bottleneck_features_val_inception.npy')
+# test_data = np.load('bottleneck_features_test_inception.npy')
+
+#Save the weights
+# model.save_weights('inception_model_2.h5')
+
+
+# if __name__ == "__main__":

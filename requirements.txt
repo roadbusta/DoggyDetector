@@ -4,7 +4,6 @@ pickle
 glob
 os
 tensorflow.keras
-tqdm
 keras
 math
 
