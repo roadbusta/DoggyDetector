@@ -1,5 +1,5 @@
 # Import relevant custom utilities
-from DoggyDetector.data import category_list, create_training_data, data_from_pickle, model_to_pickle
+from DoggyDetector.data import category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle
 from DoggyDetector.model import init_model
 from DoggyDetector.utils import array_to_tensor
 
@@ -12,13 +12,14 @@ from keras import applications
 
 
 class Trainer():
-    def train(n = None,pickle = True):
+    def train(self, n = None,pickle = True):
         #Load the data for pickle if it exists, otherwise from the raw data
         if pickle:
             X, y = data_from_pickle()
         else:
             categories = category_list()
             X, y = create_training_data(categories)
+            data_to_pickle(X, y)
 
         #Create a smaller sample size
         X_small = X[:n]
@@ -76,10 +77,15 @@ class Trainer():
         #Save the model as a pickle file
         model_to_pickle(model)
 
+        print("Model Trained")
 
 
 
 
 
 
-if __name__ == "__main__":
+
+# if __name__ == "__main__":
+#     trainer = Trainer()
+
+#     trainer.train( n=1000, pickle=False)
