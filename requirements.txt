@@ -1,6 +1,5 @@
 #Specific to this package
 matplotlib
-os
 tensorflow
 tensorflow.keras
 keras
