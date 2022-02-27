@@ -1,15 +1,17 @@
 # Import relevant libraries
+from email.mime import image
+from DoggyDetector.data import breed_list, model_from_pickle
+from DoggyDetector.utils import array_to_tensor
+
 import os
 import numpy as np
-
 from keras.applications import inception_v3
-
 import cv2
 import matplotlib.pyplot as plt
 
 
 class Predictor():
-    def predictor(image_path, model):
+    def predict(self,image_path, model):
 
         #Load the image
         single_test = cv2.imread(image_path)
@@ -28,23 +30,14 @@ class Predictor():
         # Convert to an array
         _single_test = np.array(_single_test)
 
-        # This is where I am up to, change the below to the array_to_tensor function
-
-
-        #Convert image into tensor
-        def array_to_tensor(input_array):
-            list_of_tensors = [
-                np.expand_dims(image, axis=0) for image in input_array
-            ]
-            return np.vstack(list_of_tensors)
-
-
+        # Convert the array into a tensor
         _single_test = array_to_tensor(_single_test).astype('float32') / 255
 
         #Do this bottle neck thing
         inception_bottleneck = inception_v3.InceptionV3(weights='imagenet',
                                                         include_top=False,
                                                         pooling='avg')
+
         _single_test = inception_bottleneck.predict(_single_test,
                                                     batch_size=32,
                                                     verbose=0)
@@ -54,16 +47,18 @@ class Predictor():
             np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
             for tensor in _single_test
         ]
-        dog_breed_predictions
+        # dog_breed_predictions
 
         # Create a list of breeds
-        DATADIR = "/Users/joe/Desktop/Temporary/Stanford Dogs Dataset/Images"
-        CATEGORIES = os.listdir(DATADIR)
-        CATEGORIES.remove(".DS_Store")
+        breeds = breed_list()
 
-        print(CATEGORIES[dog_breed_predictions[0]])
+        print(breeds[dog_breed_predictions[0]])
 
 
-# if __name__ == "__main__":
-# model = model_from_pickle()
-# image_path = "/Users/joe/Desktop/Screen Shot 2022-02-23 at 8.26.00 am.png"
+if __name__ == "__main__":
+    model = model_from_pickle()
+    path = "/Users/joe/Desktop/BREED Hero Desktop_0113_french_bulldog.webp"
+
+    predictor = Predictor()
+
+    predictor.predict(image_path = path, model = model)
