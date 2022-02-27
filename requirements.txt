@@ -1,6 +1,5 @@
 #Specific to this package
 matplotlib
-pickle
 glob
 os
 tensorflow
