@@ -2,7 +2,6 @@
 matplotlib
 tensorflow
 keras
-cv2
 
 # packaging
 pip>=9
