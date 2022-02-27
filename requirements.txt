@@ -3,9 +3,11 @@ matplotlib
 pickle
 glob
 os
+tensorflow
 tensorflow.keras
 keras
 math
+cv2
 
 # packaging
 pip>=9
