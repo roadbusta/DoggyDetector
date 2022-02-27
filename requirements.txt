@@ -1,7 +1,6 @@
 #Specific to this package
 matplotlib
 tensorflow
-tensorflow.keras
 keras
 math
 cv2
