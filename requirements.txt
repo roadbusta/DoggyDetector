@@ -1,7 +1,7 @@
 #Specific to this package
-# matplotlib
-# tensorflow
-# keras
+matplotlib
+tensorflow
+keras
 
 # packaging
 pip>=9
@@ -22,10 +22,10 @@ pytest
 yapf
 
 # API
-# gcsfs
-# google-cloud-storage
-# mlflow
-# s3fs
+gcsfs
+google-cloud-storage
+mlflow
+s3fs
 
 # utilities
 six>=1.14
