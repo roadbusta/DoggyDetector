@@ -1,0 +1,13 @@
+*.egg-info
+.coverage
+.ipynb_checkpoints
+.DS_Store
+raw_data/
+*.csv
+**/__pycache__/
+.env
+*X.pkl
+*X.pickle
+~$*.docx
+
+# May need to switch on the pickle files in the future
