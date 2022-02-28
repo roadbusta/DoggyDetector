@@ -2,12 +2,14 @@
 .coverage
 .ipynb_checkpoints
 .DS_Store
-/raw_data
+/raw_data/Images
 *.csv
 **/__pycache__/
 .env
 *.pkl
 *.pickle
 ~$*.docx
+*.pkl
+*.pickle
 
 # May need to switch on the pickle files in the future
