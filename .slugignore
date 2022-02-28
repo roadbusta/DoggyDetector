@@ -2,12 +2,13 @@
 .coverage
 .ipynb_checkpoints
 .DS_Store
-/raw_data
+/raw_data/
 *.csv
 **/__pycache__/
 .env
 *X.pkl
 *X.pickle
 ~$*.docx
+/DoggyDetector/data
 
 # May need to switch on the pickle files in the future
