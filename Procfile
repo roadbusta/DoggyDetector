@@ -1,1 +1,1 @@
-web: pip install . -U && doggy_detector-run
+web: pip install . -U && doggydetector-run
