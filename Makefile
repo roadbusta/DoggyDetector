@@ -62,10 +62,10 @@ pypi:
 PROJECT_ID=doggy-detector-2022
 
 # bucket name - replace with your GCP bucket name
-BUCKET_NAME=
+BUCKET_NAME=doggy-detector-gulay-2022
 
 # choose your region from https://cloud.google.com/storage/docs/locations#available_locations
-REGION=europe-west1
+REGION=AUSTRALIA-SOUTHEAST2
 
 set_project:
 	@gcloud config set project ${PROJECT_ID}
