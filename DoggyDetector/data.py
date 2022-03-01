@@ -7,6 +7,9 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import cv2
 import random
 import pickle
+from google.cloud import storage
+import joblib
+
 """
 Functions related primairy to the loading and saving of data
 """
@@ -106,6 +109,22 @@ def data_from_pickle(pickle_path="./data/Pickle Files/"):
     return X, y
 
 
+#Data to GCP
+def data_to_pickle(X, y, BUCKET_NAME, STORAGE_LOCATION):
+    """
+    Converts the data into pickle files for easier loading
+    in the future
+    """
+
+    pickle_out = open(pickle_path + "X.pickle", "wb")
+    pickle.dump(X, pickle_out)
+    pickle_out.close()
+
+    pickle_out = open(pickle_path + "y.pickle", "wb")
+    pickle.dump(y, pickle_out)
+    pickle_out.close()
+
+
 #Model to pickle
 def model_to_pickle(model, pickle_path="./data/Pickle Files/"):
     """
@@ -128,6 +147,29 @@ def model_from_pickle(pickle_path="./data/Pickle Files/"):
     model = pickle.load(pickle_in)
 
     return model
+
+
+# Upload model to GCP
+def upload_model_to_gcp(model, BUCKET_NAME, STORAGE_LOCATION):
+    """
+    Dumps model into a .joblib file then uploads to google cloud
+    """
+    joblib.dump(model, 'model.joblib')
+    print("saved model.joblib locally")
+
+    client = storage.Client()
+
+    bucket = client.bucket(BUCKET_NAME)
+
+    blob = bucket.blob(STORAGE_LOCATION)
+
+    blob.upload_from_filename('model.joblib')
+
+    print(f"uploaded model.joblib to gcp cloud storage under \n => {STORAGE_LOCATION}")
+
+# Download model from GCP
+
+
 
 
 ### Not sure if a code needs to be developed for this or not

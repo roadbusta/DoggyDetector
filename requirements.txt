@@ -2,6 +2,7 @@
 matplotlib
 tensorflow
 keras
+google.cloud
 
 # packaging
 pip>=9
