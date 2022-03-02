@@ -9,6 +9,7 @@ import random
 import pickle
 from google.cloud import storage
 import joblib
+from termcolor import colored
 
 """
 Functions related primairy to the loading and saving of data
@@ -110,19 +111,28 @@ def data_from_pickle(pickle_path="./data/Pickle Files/"):
 
 
 #Data to GCP
-def data_to_pickle(X, y, BUCKET_NAME, STORAGE_LOCATION):
+def pickle_to_gcp(local_pickle_name, BUCKET_NAME, rm = False):
     """
-    Converts the data into pickle files for easier loading
-    in the future
+    Sends the pickle file to google cloud platform.
+    Set rm = True if the local file is to be deleted as well
     """
 
-    pickle_out = open(pickle_path + "X.pickle", "wb")
-    pickle.dump(X, pickle_out)
-    pickle_out.close()
+    client = storage.Client().bucket(BUCKET_NAME)
 
-    pickle_out = open(pickle_path + "y.pickle", "wb")
-    pickle.dump(y, pickle_out)
-    pickle_out.close()
+    local_pickle_file = f"./data/Pickle Files/{local_pickle_name}"
+
+    storage_location = f"Pickle Files/{local_pickle_name}"
+
+    blob = client.blob(storage_location)
+
+    blob.upload_from_filename(local_pickle_file)
+
+    print(colored(f"=> {local_pickle_name} uploaded to bucket {BUCKET_NAME} inside {storage_location}",
+                  "green"))
+    if rm:
+        os.remove(local_pickle_file)
+
+
 
 
 #Model to pickle
@@ -150,22 +160,35 @@ def model_from_pickle(pickle_path="./data/Pickle Files/"):
 
 
 # Upload model to GCP
-def upload_model_to_gcp(model, BUCKET_NAME, STORAGE_LOCATION):
-    """
-    Dumps model into a .joblib file then uploads to google cloud
-    """
-    joblib.dump(model, 'model.joblib')
-    print("saved model.joblib locally")
+# def upload_model_to_gcp(model, BUCKET_NAME, STORAGE_LOCATION):
+#     """
+#     Dumps model into a .joblib file then uploads to google cloud
+#     """
+#     # joblib.dump(model, 'model.joblib')
+#     # print("saved model.joblib locally")
 
-    client = storage.Client()
+#     # client = storage.Client()
 
-    bucket = client.bucket(BUCKET_NAME)
+# bucket = client.bucket(BUCKET_NAME)
 
-    blob = bucket.blob(STORAGE_LOCATION)
+# blob = bucket.blob(STORAGE_LOCATION)
 
-    blob.upload_from_filename('model.joblib')
+# blob.upload_from_filename('model.joblib')
 
-    print(f"uploaded model.joblib to gcp cloud storage under \n => {STORAGE_LOCATION}")
+# print(f"uploaded model.joblib to gcp cloud storage under \n => {STORAGE_LOCATION}")
+
+#This needs to be altered with this code:
+# def storage_upload(rm=False):
+# client = storage.Client().bucket(BUCKET_NAME)
+
+# local_model_name = 'model.joblib'
+# storage_location = f"models/{MODEL_NAME}/{MODEL_VERSION}/{local_model_name}"
+# blob = client.blob(storage_location)
+# blob.upload_from_filename('model.joblib')
+# print(colored(f"=> model.joblib uploaded to bucket {BUCKET_NAME} inside {storage_location}",
+#               "green"))
+# if rm:
+#     os.remove('model.joblib')
 
 # Download model from GCP
 
@@ -188,4 +211,10 @@ def upload_model_to_gcp(model, BUCKET_NAME, STORAGE_LOCATION):
 # model.save_weights('inception_model_2.h5')
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
+    pickle_X = "X.pickle"
+    pickle_y = "y.pickle"
+    BUCKET_NAME = "doggy-detector-2022-bucket"
+
+    pickle_to_gcp(pickle_y, BUCKET_NAME)
+    pickle_to_gcp(pickle_X, BUCKET_NAME)
