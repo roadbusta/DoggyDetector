@@ -133,6 +133,50 @@ def pickle_to_gcp(local_pickle_name, BUCKET_NAME, rm = False):
         os.remove(local_pickle_file)
 
 
+#Data from GCP (WORK IN PROGRESS)
+def pickle_from_gcp(local_pickle_name, BUCKET_NAME, rm=False):
+
+    # """
+    # Takes data from the pickle files and loads them as X and y values
+    # """
+
+    # #Load the pickle files
+    # pickle_in = open(pickle_path + "X.pickle", "rb")
+    # X = pickle.load(pickle_in)
+
+    # pickle_in = open(pickle_path + "y.pickle", "rb")
+    # y = pickle.load(pickle_in)
+
+    # return X, y
+
+    # """
+    # Sends the pickle file to google cloud platform.
+    # Set rm = True if the local file is to be deleted as well
+    # """
+
+    # client = storage.Client().bucket(BUCKET_NAME)
+
+    # local_pickle_file = f"./data/Pickle Files/{local_pickle_name}"
+
+    # storage_location = f"Pickle Files/{local_pickle_name}"
+
+    # blob = client.blob(storage_location)
+
+    # blob.upload_from_filename(local_pickle_file)
+
+    # print(
+    #     colored(
+    #         f"=> {local_pickle_name} uploaded to bucket {BUCKET_NAME} inside {storage_location}",
+    #         "green"))
+    # if rm:
+    #     os.remove(local_pickle_file)
+
+    return None
+
+
+
+
+
 
 
 #Model to pickle
@@ -211,10 +255,10 @@ def model_from_pickle(pickle_path="./data/Pickle Files/"):
 # model.save_weights('inception_model_2.h5')
 
 
-if __name__ == "__main__":
-    pickle_X = "X.pickle"
-    pickle_y = "y.pickle"
-    BUCKET_NAME = "doggy-detector-2022-bucket"
+# if __name__ == "__main__":
+#     pickle_X = "X.pickle"
+#     pickle_y = "y.pickle"
+#     BUCKET_NAME = "doggy-detector-2022-bucket"
 
-    pickle_to_gcp(pickle_y, BUCKET_NAME)
-    pickle_to_gcp(pickle_X, BUCKET_NAME)
+#     pickle_to_gcp(pickle_y, BUCKET_NAME)
+#     pickle_to_gcp(pickle_X, BUCKET_NAME)
