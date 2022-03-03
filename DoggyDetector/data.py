@@ -111,7 +111,7 @@ def data_from_pickle(pickle_path="./data/Pickle Files/"):
 
 
 #Data to GCP
-def file_to_gcp(SOURCE_FILE_NAME, BUCKET_NAME,BUCKET_DESTINATION, rm = False):
+def file_to_gcp(BUCKET_NAME, BUCKET_DESTINATION, SOURCE_FILE_NAME, rm=False):
     """
     Sends the file to google cloud platform.
     Set rm = True if the local file is to be deleted as well
