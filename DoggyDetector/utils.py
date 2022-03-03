@@ -1,9 +1,6 @@
 import numpy as np
 from DoggyDetector.data import breed_list, model_from_pickle
 
-
-
-
  # Create a function that converts arrays into tensors
 def array_to_tensor(input_array):
     """

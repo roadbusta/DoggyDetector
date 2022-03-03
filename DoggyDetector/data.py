@@ -111,72 +111,39 @@ def data_from_pickle(pickle_path="./data/Pickle Files/"):
 
 
 #Data to GCP
-def pickle_to_gcp(local_pickle_name, BUCKET_NAME, rm = False):
+def file_to_gcp(SOURCE_FILE_NAME, BUCKET_NAME,BUCKET_DESTINATION, rm = False):
     """
-    Sends the pickle file to google cloud platform.
+    Sends the file to google cloud platform.
     Set rm = True if the local file is to be deleted as well
     """
 
     client = storage.Client().bucket(BUCKET_NAME)
 
-    local_pickle_file = f"./data/Pickle Files/{local_pickle_name}"
+    blob = client.blob(BUCKET_DESTINATION)
 
-    storage_location = f"Pickle Files/{local_pickle_name}"
+    blob.upload_from_filename(SOURCE_FILE_NAME)
 
-    blob = client.blob(storage_location)
-
-    blob.upload_from_filename(local_pickle_file)
-
-    print(colored(f"=> {local_pickle_name} uploaded to bucket {BUCKET_NAME} inside {storage_location}",
+    print(colored(f"=> {SOURCE_FILE_NAME} uploaded to bucket {BUCKET_NAME} inside {BUCKET_DESTINATION}",
                   "green"))
     if rm:
-        os.remove(local_pickle_file)
+        os.remove(SOURCE_FILE_NAME)
 
 
 #Data from GCP (WORK IN PROGRESS)
-def pickle_from_gcp(local_pickle_name, BUCKET_NAME, rm=False):
+def file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,DESTINATION_FILE_NAME):
 
-    # """
-    # Takes data from the pickle files and loads them as X and y values
-    # """
+    """
+    Takes the file from gcp and saves it to the stated destination
+    """
 
-    # #Load the pickle files
-    # pickle_in = open(pickle_path + "X.pickle", "rb")
-    # X = pickle.load(pickle_in)
+    storage_client = storage.Client()
 
-    # pickle_in = open(pickle_path + "y.pickle", "rb")
-    # y = pickle.load(pickle_in)
-
-    # return X, y
-
-    # """
-    # Sends the pickle file to google cloud platform.
-    # Set rm = True if the local file is to be deleted as well
-    # """
-
-    # client = storage.Client().bucket(BUCKET_NAME)
-
-    # local_pickle_file = f"./data/Pickle Files/{local_pickle_name}"
-
-    # storage_location = f"Pickle Files/{local_pickle_name}"
-
-    # blob = client.blob(storage_location)
-
-    # blob.upload_from_filename(local_pickle_file)
-
-    # print(
-    #     colored(
-    #         f"=> {local_pickle_name} uploaded to bucket {BUCKET_NAME} inside {storage_location}",
-    #         "green"))
-    # if rm:
-    #     os.remove(local_pickle_file)
-
-    return None
-
-
-
-
-
+    bucket = storage_client.bucket(BUCKET_NAME)
+    # Construct a client side representation of a blob.
+    blob = bucket.blob(BUCKET_PICKLE_LOCATION)
+    blob.download_to_filename(DESTINATION_FILE_NAME)
+    print(colored("Downloaded storage object {} from bucket {} to local file {}.".format(
+            BUCKET_PICKLE_LOCATION, BUCKET_NAME, DESTINATION_FILE_NAME), "green"))
 
 
 #Model to pickle
@@ -203,42 +170,6 @@ def model_from_pickle(pickle_path="./data/Pickle Files/"):
     return model
 
 
-# Upload model to GCP
-# def upload_model_to_gcp(model, BUCKET_NAME, STORAGE_LOCATION):
-#     """
-#     Dumps model into a .joblib file then uploads to google cloud
-#     """
-#     # joblib.dump(model, 'model.joblib')
-#     # print("saved model.joblib locally")
-
-#     # client = storage.Client()
-
-# bucket = client.bucket(BUCKET_NAME)
-
-# blob = bucket.blob(STORAGE_LOCATION)
-
-# blob.upload_from_filename('model.joblib')
-
-# print(f"uploaded model.joblib to gcp cloud storage under \n => {STORAGE_LOCATION}")
-
-#This needs to be altered with this code:
-# def storage_upload(rm=False):
-# client = storage.Client().bucket(BUCKET_NAME)
-
-# local_model_name = 'model.joblib'
-# storage_location = f"models/{MODEL_NAME}/{MODEL_VERSION}/{local_model_name}"
-# blob = client.blob(storage_location)
-# blob.upload_from_filename('model.joblib')
-# print(colored(f"=> model.joblib uploaded to bucket {BUCKET_NAME} inside {storage_location}",
-#               "green"))
-# if rm:
-#     os.remove('model.joblib')
-
-# Download model from GCP
-
-
-
-
 ### Not sure if a code needs to be developed for this or not
 
 # Save files (?) Not sure if this is always required
@@ -256,9 +187,8 @@ def model_from_pickle(pickle_path="./data/Pickle Files/"):
 
 
 # if __name__ == "__main__":
-#     pickle_X = "X.pickle"
-#     pickle_y = "y.pickle"
-#     BUCKET_NAME = "doggy-detector-2022-bucket"
 
-#     pickle_to_gcp(pickle_y, BUCKET_NAME)
-#     pickle_to_gcp(pickle_X, BUCKET_NAME)
+#     BUCKET_NAME = "doggy-detector-2022-bucket"
+#     BUCKET_PICKLE_LOCATION = "Pickle Files/y.pickle"
+#     DESTINATION_FILE_NAME = "./data/Pickle Files/y.pickle"
+#     file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION, DESTINATION_FILE_NAME)
