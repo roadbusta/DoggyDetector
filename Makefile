@@ -54,6 +54,19 @@ pypi_test:
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
 
+# ----------------------------------
+#      Run Locally
+# ----------------------------------
+
+# the name of the package inside of our packaged project containing the code that will handle the data and train the mode
+PACKAGE_NAME=DoggyDetector
+
+#the main code file of the package for the training
+FILENAME = trainer
+
+run_locally:
+	@python -m ${PACKAGE_NAME}.${FILENAME}
+
 
 # ----------------------------------
 #      Google Cloud Platform
@@ -81,6 +94,27 @@ BUCKET_FOLDER=data
 # name for the uploaded file inside of the bucket (we choose not to rename the file that we upload)
 BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
 
+# the version of Python to be used for the training
+PYTHON_VERSION=3.7
+
+FRAMEWORK=scikit-learn
+
+# the version of the machine learning libraries provided by GCP for the training
+RUNTIME_VERSION=1.15
+
+BUCKET_TRAINING_FOLDER = training
+
+JOB_NAME=doggy_detector_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
+
 upload_data:
     # @gsutil cp train_1k.csv gs://wagon-ml-my-bucket-name/data/train_1k.csv
 	@gsutil cp -r ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
+
+gcloud ai-platform jobs submit training ${JOB_NAME} \
+	--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
+	--package-path ${PACKAGE_NAME} \
+	--module-name ${PACKAGE_NAME}.${FILENAME} \
+	--python-version=${PYTHON_VERSION} \
+	--runtime-version=${RUNTIME_VERSION} \
+	--region ${REGION} \
+	--stream-logs

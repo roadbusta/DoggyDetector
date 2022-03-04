@@ -10,6 +10,7 @@ from keras.applications import inception_v3
 from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 from keras import applications
 
+import os
 
 class Trainer():
     def train_local_data(self, n = None,pickle = True):
@@ -18,7 +19,6 @@ class Trainer():
         n is the number of images you want to create the model based on
         set pickle to True if the data is already in a pickle file
         """
-
         #Load the data for pickle if it exists, otherwise from the raw data
         if pickle:
             X, y = data_from_pickle()
@@ -87,6 +87,14 @@ class Trainer():
 
 
     def train_GCP_data(self, n=None, pickle=True):
+        #Convert the current working directory into a string
+        cwd = str(os.getcwd())
+
+        #Find the first occurance of DoggyDetector, and add 13 to create slicer value
+        slicer = cwd.index("DoggyDetector") + 13
+
+        #create absolute working directory
+        awd = cwd[0:slicer]
 
         #Load the data from Pickle File in GCP
 
@@ -95,13 +103,13 @@ class Trainer():
 
             #Load y pickle
             BUCKET_PICKLE_LOCATION = "Pickle Files/y.pickle"
-            DESTINATION_FILE_NAME = "./data/Pickle Files/y.pickle"
+            DESTINATION_FILE_NAME = awd + "/DoggyDetector" +"/data/Pickle Files/y.pickle"
             file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
                           DESTINATION_FILE_NAME)
 
             #Load x pickle
             BUCKET_PICKLE_LOCATION = "Pickle Files/X.pickle"
-            DESTINATION_FILE_NAME = "./data/Pickle Files/X.pickle"
+            DESTINATION_FILE_NAME = awd + "/DoggyDetector" + "/data/Pickle Files/X.pickle"
             file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
                           DESTINATION_FILE_NAME)
 
@@ -114,7 +122,7 @@ class Trainer():
 
             #Load y pickle
             BUCKET_PICKLE_LOCATION = "data/"
-            DESTINATION_FILE_NAME = "./raw_data/"
+            DESTINATION_FILE_NAME = awd + "/raw_data/"
             file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
                           DESTINATION_FILE_NAME)
 
@@ -192,7 +200,7 @@ class Trainer():
         # Upload the modle to Google Cloud Platform
 
         BUCKET_DESTINATION = "Pickle Files/model.pickle"
-        SOURCE_FILE_NAME = "./data/Pickle Files/model.pickle"
+        SOURCE_FILE_NAME = awd + "/DoggyDetector" + "/data/Pickle Files/model.pickle"
         file_to_gcp(BUCKET_NAME, BUCKET_DESTINATION, SOURCE_FILE_NAME)
 
 
