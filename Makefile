@@ -75,10 +75,11 @@ run_locally:
 PROJECT_ID=doggy-detector-2022
 
 # bucket name - replace with your GCP bucket name
-BUCKET_NAME=doggy-detector-2022-bucket
+BUCKET_NAME=doggy-detector-2022-bucket-v2
 
 # choose your region from https://cloud.google.com/storage/docs/locations#available_locations
-REGION=AUSTRALIA-SOUTHEAST2
+REGION=australia-southeast1
+
 
 set_project:
 	@gcloud config set project ${PROJECT_ID}
@@ -110,11 +111,12 @@ upload_data:
     # @gsutil cp train_1k.csv gs://wagon-ml-my-bucket-name/data/train_1k.csv
 	@gsutil cp -r ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
 
-gcloud ai-platform jobs submit training ${JOB_NAME} \
-	--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
-	--package-path ${PACKAGE_NAME} \
-	--module-name ${PACKAGE_NAME}.${FILENAME} \
-	--python-version=${PYTHON_VERSION} \
-	--runtime-version=${RUNTIME_VERSION} \
-	--region ${REGION} \
-	--stream-logs
+gcp_submit_training:
+	gcloud ai-platform jobs submit training ${JOB_NAME} \
+		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
+		--package-path ${PACKAGE_NAME} \
+		--module-name ${PACKAGE_NAME}.${FILENAME} \
+		--python-version=${PYTHON_VERSION} \
+		--runtime-version=${RUNTIME_VERSION} \
+		--region ${REGION} \
+		--stream-logs
