@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Import relevant custom utilities
 from DoggyDetector.data import category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle, file_from_gcp, file_to_gcp
 from DoggyDetector.model import init_model
