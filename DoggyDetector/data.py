@@ -14,20 +14,14 @@ from termcolor import colored
 """
 Functions related primairy to the loading and saving of data
 """
-def category_list(DATADIR= "/raw_data/Images"):
+def category_list(DATADIR= "/raw_data/Images", make_file = True):
     """
     Creates a category list based on the folders in [DATADIR]
     """
-    #Convert the current working directory into a string
-    cwd = str(os.getcwd())
-
-    #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-    slicer = cwd.index("DoggyDetector") + 13
-
-    #create absolute working directory
-    awd = cwd[0:slicer]
-
-    categories = os.listdir(awd + DATADIR)
+    if make_file:
+        categories = os.listdir( "."+ DATADIR)
+    else:
+        categories = os.listdir(".." + DATADIR)
     categories.remove(".DS_Store")
     return categories
 
