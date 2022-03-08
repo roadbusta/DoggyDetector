@@ -1,12 +1,9 @@
-<<<<<<< HEAD
-=======
 #Specific to this package
 matplotlib
 tensorflow
 keras
 google.cloud
 
->>>>>>> 5bee5f0a8c41032654183f039cb73521e87229f5
 # packaging
 pip>=9
 setuptools>=26
@@ -16,11 +13,7 @@ wheel>=0.29
 # data science
 numpy
 pandas
-<<<<<<< HEAD
-scikit-learn
-=======
 # scikit-learn
->>>>>>> 5bee5f0a8c41032654183f039cb73521e87229f5
 
 # tests/linter
 black
