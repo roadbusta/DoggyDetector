@@ -11,7 +11,11 @@ black:
 	@black scripts/* DoggyDetector/*.py
 
 test:
+<<<<<<< HEAD
 	@coverage run -m pytest tests/*.py
+=======
+	@coverage run -m pytest tests/test_*.py
+>>>>>>> 5bee5f0a8c41032654183f039cb73521e87229f5
 	@coverage report -m --omit="${VIRTUAL_ENV}/lib/python*"
 
 ftest:
@@ -53,3 +57,71 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+<<<<<<< HEAD
+=======
+
+# ----------------------------------
+#      Run Locally
+# ----------------------------------
+
+# the name of the package inside of our packaged project containing the code that will handle the data and train the mode
+PACKAGE_NAME=DoggyDetector
+
+#the main code file of the package for the training
+FILENAME = trainer
+
+run_locally:
+	@python -m ${PACKAGE_NAME}.${FILENAME}
+
+
+# ----------------------------------
+#      Google Cloud Platform
+# ----------------------------------
+# project id - replace with your GCP project id
+PROJECT_ID=doggy-detector-2022
+
+# bucket name - replace with your GCP bucket name
+BUCKET_NAME=doggy-detector-2022-bucket
+
+# choose your region from https://cloud.google.com/storage/docs/locations#available_locations
+REGION=AUSTRALIA-SOUTHEAST2
+
+set_project:
+	@gcloud config set project ${PROJECT_ID}
+
+create_bucket:
+	@gsutil mb -l ${REGION} -p ${PROJECT_ID} gs://${BUCKET_NAME}
+
+LOCAL_PATH="/Users/joe/code/roadbusta/DoggyDetector/raw_data/Images"
+
+# bucket directory in which to store the uploaded file (`data` is an arbitrary name that we choose to use)
+BUCKET_FOLDER=data
+
+# name for the uploaded file inside of the bucket (we choose not to rename the file that we upload)
+BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
+
+# the version of Python to be used for the training
+PYTHON_VERSION=3.7
+
+FRAMEWORK=scikit-learn
+
+# the version of the machine learning libraries provided by GCP for the training
+RUNTIME_VERSION=1.15
+
+BUCKET_TRAINING_FOLDER = training
+
+JOB_NAME=doggy_detector_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
+
+upload_data:
+    # @gsutil cp train_1k.csv gs://wagon-ml-my-bucket-name/data/train_1k.csv
+	@gsutil cp -r ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
+
+gcloud ai-platform jobs submit training ${JOB_NAME} \
+	--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
+	--package-path ${PACKAGE_NAME} \
+	--module-name ${PACKAGE_NAME}.${FILENAME} \
+	--python-version=${PYTHON_VERSION} \
+	--runtime-version=${RUNTIME_VERSION} \
+	--region ${REGION} \
+	--stream-logs
+>>>>>>> 5bee5f0a8c41032654183f039cb73521e87229f5
