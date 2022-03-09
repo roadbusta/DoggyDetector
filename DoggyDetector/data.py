@@ -131,8 +131,7 @@ def data_from_pickle(pickle_path="/data/Pickle Files/", make_file = True):
     awd = ".."
     if make_file:
         awd = "."
-    print(pickle_path)
-    print(type(pickle_path))
+
 
     #Load the pickle files
     pickle_in = open(awd + "/DoggyDetector" + pickle_path + "X.pickle", "rb")
@@ -163,7 +162,7 @@ def file_to_gcp(BUCKET_NAME, BUCKET_DESTINATION, SOURCE_FILE_NAME, rm=False):
         os.remove(SOURCE_FILE_NAME)
 
 
-#Data from GCP (WORK IN PROGRESS)
+#Data from GCP
 def file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,DESTINATION_FILE_NAME):
 
     """
@@ -178,6 +177,24 @@ def file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,DESTINATION_FILE_NAME):
     blob.download_to_filename(DESTINATION_FILE_NAME)
     print(colored("Downloaded storage object {} from bucket {} to local file {}.".format(
             BUCKET_PICKLE_LOCATION, BUCKET_NAME, DESTINATION_FILE_NAME), "green"))
+
+
+
+# Data from GCP as a pickle string(WORK IN PROGRESS)
+def pickle_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION):
+
+    """
+    Takes the file from gcp, converts it to a pickle then uses that pickle file
+    """
+
+    storage_client = storage.Client()
+
+    bucket = storage_client.bucket(BUCKET_NAME)
+    # Construct a client side representation of a blob.
+    blob = bucket.blob(BUCKET_PICKLE_LOCATION)
+
+    pickle_in = blob.download_as_string()
+    return pickle_in
 
 
 #Model to pickle

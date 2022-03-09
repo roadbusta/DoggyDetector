@@ -1,5 +1,5 @@
 # Import relevant custom utilities
-from DoggyDetector.data import category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle, file_from_gcp, file_to_gcp
+from DoggyDetector.data import category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle, file_from_gcp, file_to_gcp, pickle_from_gcp
 from DoggyDetector.model import init_model
 from DoggyDetector.utils import array_to_tensor
 
@@ -100,17 +100,16 @@ class Trainer():
 
             #Load y pickle
             BUCKET_PICKLE_LOCATION = "Pickle Files/y.pickle"
-            DESTINATION_FILE_NAME = awd + "/DoggyDetector" +"/data/Pickle Files/y.pickle"
-            file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
-                          DESTINATION_FILE_NAME)
 
+            y_pickle_in = pickle_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION)
+            y = pickle.load(y_pickle_in)
             #Load x pickle
             BUCKET_PICKLE_LOCATION = "Pickle Files/X.pickle"
-            DESTINATION_FILE_NAME = awd + "/DoggyDetector" + "/data/Pickle Files/X.pickle"
-            file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
-                          DESTINATION_FILE_NAME)
+            X_pickle_in = pickle_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION)
+            X = pickle.load(X_pickle_in)
 
-            X, y = data_from_pickle(make_file= make_file)
+
+            print("Data has been loaded from pickle")
 
         else:
             ##Note this hasn't been tested###
@@ -128,6 +127,7 @@ class Trainer():
             #Save X and y as pickle files locally
             data_to_pickle(X, y)
             ### ###
+
 
         #Create a smaller sample size
         X_small = X[:n]
@@ -183,7 +183,8 @@ class Trainer():
                   y_train,
                   epochs=epochs,
                   batch_size=batch_size,
-                  validation_data=(val_i_bf, y_val))
+                  validation_data=(val_i_bf, y_val),
+                  verbose = 1)
 
         #Evaluate the model- not sure if this is needed
         # (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
@@ -210,4 +211,4 @@ class Trainer():
 
 if __name__ == "__main__":
     trainer = Trainer()
-    trainer.train_local_data(n = 1000)
+    trainer.train_GCP_data(n=1000, pickle=True, make_file=True)
