@@ -18,27 +18,29 @@ def category_list(DATADIR= "/raw_data/Images", make_file = True):
     """
     Creates a category list based on the folders in [DATADIR]
     """
+
+    #Apply makefile trigger
     if make_file:
         categories = os.listdir( "."+ DATADIR)
     else:
         categories = os.listdir(".." + DATADIR)
+
+
     categories.remove(".DS_Store")
     return categories
 
 
-def breed_list(DATADIR = "/raw_data/Images"):
+def breed_list(DATADIR = "/raw_data/Images", make_file = True):
     """
     Cleans up
     the category list based on the folders in [DATADIR]
     """
-    #Convert the current working directory into a string
-    cwd = str(os.getcwd())
 
-    #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-    slicer = cwd.index("DoggyDetector") + 13
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = "."
 
-    #create absolute working directory
-    awd = cwd[0:slicer]
 
     breeds = []
     categories = os.listdir(awd + DATADIR)
@@ -52,7 +54,7 @@ def breed_list(DATADIR = "/raw_data/Images"):
     return breeds
 
 
-def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="/raw_data/Images" ):
+def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="/raw_data/Images", make_file = True ):
     '''
     Creates a training data
 
@@ -64,14 +66,11 @@ def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="/raw_data/Images"
     NOTE: y has not been one hot encoded.
     '''
 
-    #Convert the current working directory into a string
-    cwd = str(os.getcwd())
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = "."
 
-    #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-    slicer = cwd.index("DoggyDetector") + 13
-
-    #create absolute working directory
-    awd = cwd[0:slicer]
 
     X = []
     y = []
@@ -103,18 +102,16 @@ def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="/raw_data/Images"
     return X, y
 
 
-def data_to_pickle(X, y, pickle_path="/data/Pickle Files/"):
+def data_to_pickle(X, y, pickle_path="/data/Pickle Files/", make_file = True):
     """
     Converts the data into pickle files for easier loading
     in the future
     """
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = "."
 
-    #Convert the current working directory into a string
-    cwd = str(os.getcwd())
-    #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-    slicer = cwd.index("DoggyDetector") + 13
-    #create absolute working directory
-    awd = cwd[0:slicer]
 
     pickle_out = open(awd + "/DoggyDetector" + pickle_path + "X.pickle", "wb")
     pickle.dump(X, pickle_out)
@@ -125,16 +122,17 @@ def data_to_pickle(X, y, pickle_path="/data/Pickle Files/"):
     pickle_out.close()
 
 
-def data_from_pickle(pickle_path="/data/Pickle Files/"):
+def data_from_pickle(pickle_path="/data/Pickle Files/", make_file = True):
     """
     Takes data from the pickle files and loads them as X and y values
     """
-    #Convert the current working directory into a string
-    cwd = str(os.getcwd())
-    #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-    slicer = cwd.index("DoggyDetector") + 13
-    #create absolute working directory
-    awd = cwd[0:slicer]
+
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = "."
+    print(pickle_path)
+    print(type(pickle_path))
 
     #Load the pickle files
     pickle_in = open(awd + "/DoggyDetector" + pickle_path + "X.pickle", "rb")
@@ -183,17 +181,16 @@ def file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,DESTINATION_FILE_NAME):
 
 
 #Model to pickle
-def model_to_pickle(model, pickle_path="/data/Pickle Files/"):
+def model_to_pickle(model, pickle_path="/data/Pickle Files/", make_file = True):
     """
     Converts the model into pickle files for easier loading
     in the future
     """
-    #Convert the current working directory into a string
-    cwd = str(os.getcwd())
-    #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-    slicer = cwd.index("DoggyDetector") + 13
-    #create absolute working directory
-    awd = cwd[0:slicer]
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = "."
+
 
     pickle_out = open(awd + "/DoggyDetector" + pickle_path + "model.pickle", "wb")
     pickle.dump(model, pickle_out)
@@ -201,16 +198,14 @@ def model_to_pickle(model, pickle_path="/data/Pickle Files/"):
 
 
 #Model from pickle
-def model_from_pickle(pickle_path="/data/Pickle Files/"):
+def model_from_pickle(pickle_path="/data/Pickle Files/", make_file = True):
     """
     Takes model from the pickle files and loads it
     """
-    #Convert the current working directory into a string
-    cwd = str(os.getcwd())
-    #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-    slicer = cwd.index("DoggyDetector") + 13
-    #create absolute working directory
-    awd = cwd[0:slicer]
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = "."
 
     #Load the pickle files
     pickle_in = open(awd + "/DoggyDetector" + pickle_path + "model.pickle",

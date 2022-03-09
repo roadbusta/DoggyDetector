@@ -13,7 +13,7 @@ from keras import applications
 import os
 
 class Trainer():
-    def train_local_data(self, n = None,pickle = True):
+    def train_local_data(self, n = None,pickle = True, make_file = True):
         """
         Trains a model locally
         n is the number of images you want to create the model based on
@@ -21,10 +21,10 @@ class Trainer():
         """
         #Load the data for pickle if it exists, otherwise from the raw data
         if pickle:
-            X, y = data_from_pickle()
+            X, y = data_from_pickle(make_file= make_file)
         else:
-            categories = category_list()
-            X, y = create_training_data(categories)
+            categories = category_list(make_file= make_file)
+            X, y = create_training_data(categories, make_file= make_file)
             data_to_pickle(X, y)
 
         #Create a smaller sample size
@@ -81,20 +81,17 @@ class Trainer():
 
 
         #Save the model as a pickle file
-        model_to_pickle(model)
+        model_to_pickle(model, make_file= make_file)
 
         print("Model Trained")
 
 
-    def train_GCP_data(self, n=None, pickle=True):
-        #Convert the current working directory into a string
-        cwd = str(os.getcwd())
+    def train_GCP_data(self, n=None, pickle=True, make_file = True):
+        #Apply makefile trigger to absolute working directory
+        awd = ".."
+        if make_file:
+            awd = "."
 
-        #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-        slicer = cwd.index("DoggyDetector") + 13
-
-        #create absolute working directory
-        awd = cwd[0:slicer]
 
         #Load the data from Pickle File in GCP
 
@@ -113,7 +110,7 @@ class Trainer():
             file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
                           DESTINATION_FILE_NAME)
 
-            X, y = data_from_pickle()
+            X, y = data_from_pickle(make_file= make_file)
 
         else:
             ##Note this hasn't been tested###
@@ -126,8 +123,8 @@ class Trainer():
             file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
                           DESTINATION_FILE_NAME)
 
-            categories = category_list()
-            X, y = create_training_data(categories)
+            categories = category_list(make_file = make_file)
+            X, y = create_training_data(categories, make_file= make_file)
             #Save X and y as pickle files locally
             data_to_pickle(X, y)
             ### ###
@@ -195,7 +192,7 @@ class Trainer():
         #                                             verbose=0)
 
         #Save the model as a pickle file
-        model_to_pickle(model)
+        model_to_pickle(model, make_file= make_file)
 
         # Upload the modle to Google Cloud Platform
 
@@ -212,8 +209,5 @@ class Trainer():
 
 
 if __name__ == "__main__":
-
-    cwd = str(os.getcwd())
-    print(cwd) # Added this as a troubleshooting step
     trainer = Trainer()
-    trainer.train_GCP_data( n=1000, pickle=True)
+    trainer.train_local_data(n = 1000)
