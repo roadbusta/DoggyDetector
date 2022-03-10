@@ -232,6 +232,27 @@ def model_from_pickle(pickle_path="/data/Pickle Files/", make_file = True):
     return model
 
 
+def save_model_locally(model):
+    """Save the model into a .joblib format"""
+    joblib.dump(model, 'model.joblib')
+    print(colored("model.joblib saved locally", "green"))
+
+
+def storage_upload(BUCKET_NAME, MODEL_NAME, MODEL_VERSION,rm=False):
+    client = storage.Client().bucket(BUCKET_NAME)
+
+    local_model_name = 'model.joblib'
+    storage_location = f"models/{MODEL_NAME}/{MODEL_VERSION}/{local_model_name}"
+    blob = client.blob(storage_location)
+    blob.upload_from_filename('model.joblib')
+    print(
+        colored(
+            f"=> model.joblib uploaded to bucket {BUCKET_NAME} inside {storage_location}",
+            "green"))
+    if rm:
+        os.remove('model.joblib')
+
+
 ### Not sure if a code needs to be developed for this or not
 
 # Save files (?) Not sure if this is always required
