@@ -1,5 +1,5 @@
 # Import relevant custom utilities
-from DoggyDetector.data import category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle, file_from_gcp, file_to_gcp
+from DoggyDetector.data import save_model_locally, storage_upload, category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle, file_from_gcp, file_to_gcp, pickle_from_gcp
 from DoggyDetector.model import init_model
 from DoggyDetector.utils import array_to_tensor
 
@@ -9,22 +9,23 @@ import numpy as np
 from keras.applications import inception_v3
 from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 from keras import applications
+import pickle
 
 import os
 
 class Trainer():
-    def train_local_data(self, n = None,pickle = True):
+    def train_local_data(self, n = None,pickle_source = True, make_file = True):
         """
         Trains a model locally
         n is the number of images you want to create the model based on
         set pickle to True if the data is already in a pickle file
         """
         #Load the data for pickle if it exists, otherwise from the raw data
-        if pickle:
-            X, y = data_from_pickle()
+        if pickle_source:
+            X, y = data_from_pickle(make_file= make_file)
         else:
-            categories = category_list()
-            X, y = create_training_data(categories)
+            categories = category_list(make_file= make_file)
+            X, y = create_training_data(categories, make_file= make_file)
             data_to_pickle(X, y)
 
         #Create a smaller sample size
@@ -81,44 +82,40 @@ class Trainer():
 
 
         #Save the model as a pickle file
-        model_to_pickle(model)
+        model_to_pickle(model, make_file= make_file)
 
         print("Model Trained")
 
 
-    def train_GCP_data(self, n=None, pickle=True):
-        #Convert the current working directory into a string
-        cwd = str(os.getcwd())
+    def train_GCP_data(self, n=None, pickle_source=True, make_file = True):
+        #Apply makefile trigger to absolute working directory
+        awd = ".."
+        if make_file:
+            awd = "."
 
-        #Find the first occurance of DoggyDetector, and add 13 to create slicer value
-        slicer = cwd.index("DoggyDetector") + 13
-
-        #create absolute working directory
-        awd = cwd[0:slicer]
 
         #Load the data from Pickle File in GCP
 
-        if pickle:
-            BUCKET_NAME = "doggy-detector-2022-bucket"
+        if pickle_source:
+            BUCKET_NAME = "doggy-detector-2022-bucket-v2"
 
             #Load y pickle
             BUCKET_PICKLE_LOCATION = "Pickle Files/y.pickle"
-            DESTINATION_FILE_NAME = awd + "/DoggyDetector" +"/data/Pickle Files/y.pickle"
-            file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
-                          DESTINATION_FILE_NAME)
 
+            y_pickle_in = pickle_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION)
+            y = pickle.loads(y_pickle_in)
             #Load x pickle
             BUCKET_PICKLE_LOCATION = "Pickle Files/X.pickle"
-            DESTINATION_FILE_NAME = awd + "/DoggyDetector" + "/data/Pickle Files/X.pickle"
-            file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
-                          DESTINATION_FILE_NAME)
+            X_pickle_in = pickle_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION)
+            X = pickle.loads(X_pickle_in)
 
-            X, y = data_from_pickle()
+
+            print("Data has been loaded from pickle")
 
         else:
             ##Note this hasn't been tested###
             #Download the image files and train from scratch
-            BUCKET_NAME = "doggy-detector-2022-bucket"
+            BUCKET_NAME = "doggy-detector-2022-bucket-v2"
 
             #Load y pickle
             BUCKET_PICKLE_LOCATION = "data/"
@@ -126,11 +123,12 @@ class Trainer():
             file_from_gcp(BUCKET_NAME, BUCKET_PICKLE_LOCATION,
                           DESTINATION_FILE_NAME)
 
-            categories = category_list()
-            X, y = create_training_data(categories)
+            categories = category_list(make_file = make_file)
+            X, y = create_training_data(categories, make_file= make_file)
             #Save X and y as pickle files locally
             data_to_pickle(X, y)
             ### ###
+
 
         #Create a smaller sample size
         X_small = X[:n]
@@ -186,7 +184,8 @@ class Trainer():
                   y_train,
                   epochs=epochs,
                   batch_size=batch_size,
-                  validation_data=(val_i_bf, y_val))
+                  validation_data=(val_i_bf, y_val),
+                  verbose = 1)
 
         #Evaluate the model- not sure if this is needed
         # (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
@@ -194,15 +193,16 @@ class Trainer():
         #                                             batch_size=batch_size,
         #                                             verbose=0)
 
-        #Save the model as a pickle file
-        model_to_pickle(model)
+        #Save the model as a model.joblib file
+        save_model_locally(model)
 
         # Upload the modle to Google Cloud Platform
 
-        BUCKET_DESTINATION = "Pickle Files/model.pickle"
-        SOURCE_FILE_NAME = awd + "/DoggyDetector" + "/data/Pickle Files/model.pickle"
-        file_to_gcp(BUCKET_NAME, BUCKET_DESTINATION, SOURCE_FILE_NAME)
+        MODEL_NAME = "Inception"
+        MODEL_VERSION = "V1"
 
+
+        storage_upload(BUCKET_NAME, MODEL_NAME, MODEL_VERSION, rm=False)
 
         print("Model has been trained and uploaded to GCP")
 
@@ -213,5 +213,4 @@ class Trainer():
 
 if __name__ == "__main__":
     trainer = Trainer()
-
-    trainer.train_GCP_data( n=1000, pickle=True)
+    trainer.train_GCP_data(n=1000, pickle_source=True, make_file=True)

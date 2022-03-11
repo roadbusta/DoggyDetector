@@ -1,17 +1,19 @@
 #Specific to this package
 matplotlib
 tensorflow
+tensorflow-gpu
 keras
 google.cloud
+opencv-python
 
 # packaging
-pip>=9
+pip>=22
 setuptools>=26
 twine
 wheel>=0.29
 
 # data science
-numpy
+numpy >= 1.17
 pandas
 # scikit-learn
 
