@@ -56,10 +56,10 @@ class Predictor():
         print(breeds[dog_breed_predictions[0]])
 
 
-if __name__ == "__main__":
-    model = model_from_pickle()
-    path = "/Users/joe/Desktop/BREED Hero Desktop_0113_french_bulldog.webp"
+# if __name__ == "__main__":
+#     model = model_from_pickle()
+#     path = "/Users/joe/Desktop/BREED Hero Desktop_0113_french_bulldog.webp"
 
-    predictor = Predictor()
+#     predictor = Predictor()
 
-    predictor.predict(image_path = path, model = model)
+#     predictor.predict(image_path = path, model = model)
