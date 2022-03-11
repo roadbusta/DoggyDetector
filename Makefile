@@ -53,8 +53,7 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
-<<<<<<< HEAD
-=======
+
 
 # ----------------------------------
 #      Run Locally
@@ -110,16 +109,15 @@ BUCKET_TRAINING_FOLDER = training
 JOB_NAME=doggy_detector_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
 
 upload_data:
-    # @gsutil cp train_1k.csv gs://wagon-ml-my-bucket-name/data/train_1k.csv
 	@gsutil cp -r ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
 
 
 gcp_submit_training:
-	gcloud ai-platform jobs submit training ${JOB_NAME} \
-		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
-		--package-path ${PACKAGE_NAME} \
-		--module-name ${PACKAGE_NAME}.${FILENAME} \
-		--python-version=${PYTHON_VERSION} \
-		--runtime-version=${RUNTIME_VERSION} \
-		--region ${REGION} \
-		--stream-logs
+	@gcloud ai-platform jobs submit training ${JOB_NAME} \
+	--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
+	--package-path ${PACKAGE_NAME} \
+	--module-name ${PACKAGE_NAME}.${FILENAME} \
+	--python-version=${PYTHON_VERSION} \
+	--runtime-version=${RUNTIME_VERSION} \
+	--region ${REGION} \
+	--stream-logs
