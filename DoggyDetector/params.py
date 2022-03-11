@@ -1,10 +1,11 @@
+## Note: This hasn't actually been implemented.
+
 ### MLFLOW configuration - - - - - - - - - - - - - - - - - - -
 
 # MLFLOW_URI = "https://mlflow.lewagon.co/"
 # EXPERIMENT_NAME = "[AUS] [MEL] [roadbusta] testAPI + v1"
 
 ### DATA & MODEL LOCATIONS  - - - - - - - - - - - - - - - - - - -
-
 
 
 PATH_TO_LOCAL_MODEL = 'model.joblib'
