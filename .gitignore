@@ -6,10 +6,7 @@ raw_data/
 *.csv
 **/__pycache__/
 .env
-<<<<<<< HEAD
-=======
 *.pkl
 *.pickle
 ~$*.docx
 # May need to switch on the pickle files in the future
->>>>>>> 5bee5f0a8c41032654183f039cb73521e87229f5

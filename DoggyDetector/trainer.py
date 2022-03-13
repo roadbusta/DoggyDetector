@@ -10,8 +10,15 @@ from keras.applications import inception_v3
 from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 from keras import applications
 import pickle
-
 import os
+from memoized_property import memoized_property
+import mlflow
+from mlflow.tracking import MlflowClient
+
+
+MLFLOW_URI = "https://mlflow.lewagon.co/"
+EXPERIMENT_NAME = "[AUS] [MEL] [roadbusta] inception + v1"
+
 
 class Trainer():
     def train_local_data(self, n = None,pickle_source = True, make_file = True):
@@ -74,10 +81,10 @@ class Trainer():
                 validation_data=(val_i_bf, y_val))
 
         #Evaluate the model- not sure if this is needed
-        # (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
-        #                                             y_val,
-        #                                             batch_size=batch_size,
-        #                                             verbose=0)
+        (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
+                                                    y_val,
+                                                    batch_size=batch_size,
+                                                    verbose=0)
 
 
 
@@ -206,6 +213,27 @@ class Trainer():
 
         print("Model has been trained and uploaded to GCP")
 
+    @memoized_property
+    def mlflow_client(self):
+        mlflow.set_tracking_uri(MLFLOW_URI)
+        return MlflowClient()
+
+    @memoized_property
+    def mlflow_experiment_id(self):
+        try:
+            return self.mlflow_client.create_experiment(self.experiment_name)
+        except BaseException:
+            return self.mlflow_client.get_experiment_by_name(self.experiment_name).experiment_id
+
+    @memoized_property
+    def mlflow_run(self):
+        return self.mlflow_client.create_run(self.mlflow_experiment_id)
+
+    def mlflow_log_param(self, key, value):
+        self.mlflow_client.log_param(self.mlflow_run.info.run_id, key, value)
+
+    def mlflow_log_metric(self, key, value):
+        self.mlflow_client.log_metric(self.mlflow_run.info.run_id, key, value)
 
 
 

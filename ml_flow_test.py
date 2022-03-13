@@ -3,7 +3,7 @@
 import mlflow
 from mlflow.tracking import MlflowClient
 
-EXPERIMENT_NAME = "[AUS] [MEL] [roadbusta]"
+EXPERIMENT_NAME = "[AUS] [MEL] [roadbusta] [DoggyDetector]"
 
 # Indicate mlflow to log to remote server
 mlflow.set_tracking_uri("https://mlflow.lewagon.co/")
@@ -18,12 +18,12 @@ except BaseException:
 
 yourname = None
 
-# if yourname is None:
-#     pripythonnt("please define your name, it will be used as a parameter to log")
-#     yourname = input()
+if yourname is None:
+    print("please define your name, it will be used as a parameter to log")
+    yourname = input()
 
 for model in ["linear", "Randomforest"]:
     run = client.create_run(experiment_id)
     client.log_metric(run.info.run_id, "rmse", 4.5)
     client.log_param(run.info.run_id, "model", model)
-    # client.log_param(run.info.run_id, "student_name", yourname)
+    client.log_param(run.info.run_id, "student_name", yourname)
