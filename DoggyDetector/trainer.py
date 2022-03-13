@@ -16,11 +16,13 @@ import mlflow
 from mlflow.tracking import MlflowClient
 
 
+
 MLFLOW_URI = "https://mlflow.lewagon.co/"
 EXPERIMENT_NAME = "[AUS] [MEL] [roadbusta] inception + v1"
 
-
 class Trainer():
+
+
     def train_local_data(self, n = None,pickle_source = True, make_file = True):
         """
         Trains a model locally
@@ -78,7 +80,8 @@ class Trainer():
         model.fit(train_i_bf, y_train,
                 epochs=epochs,
                 batch_size=batch_size,
-                validation_data=(val_i_bf, y_val))
+                validation_data=(val_i_bf, y_val),
+                verbose = 0)
 
         #Evaluate the model- not sure if this is needed
         (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
@@ -86,6 +89,18 @@ class Trainer():
                                                     batch_size=batch_size,
                                                     verbose=0)
 
+
+
+        MODEL_NAME = "Inception"
+        MODEL_VERSION = "V1"
+
+        self.experiment_name = "[AUS] [MEL] [roadbusta] inception + v1"
+
+
+        metric_name = "accuracy"
+        metric_value = eval_accuracy
+        # self.mlflow_log_param(param_name, param_value)
+        self.mlflow_log_metric(metric_name, metric_value)
 
 
         #Save the model as a pickle file
@@ -194,11 +209,23 @@ class Trainer():
                   validation_data=(val_i_bf, y_val),
                   verbose = 1)
 
-        #Evaluate the model- not sure if this is needed
-        # (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
-        #                                             y_val,
-        #                                             batch_size=batch_size,
-        #                                             verbose=0)
+        # Evaluate the model- not sure if this is needed
+        (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
+                                                    y_val,
+                                                    batch_size=batch_size,
+                                                    verbose=0)
+
+        #Log on ML Flow
+        MODEL_NAME = "Inception"
+        MODEL_VERSION = "V1"
+
+        self.experiment_name = "[AUS] [MEL] [roadbusta] inception + v1"
+
+        metric_name = "accuracy"
+        metric_value = eval_accuracy
+        # self.mlflow_log_param(param_name, param_value)
+        self.mlflow_log_metric(metric_name, metric_value)
+
 
         #Save the model as a model.joblib file
         save_model_locally(model)
@@ -239,6 +266,9 @@ class Trainer():
 
 
 
+
+
 if __name__ == "__main__":
     trainer = Trainer()
     trainer.train_GCP_data(n=1000, pickle_source=True, make_file=True)
+    # trainer.train_local_data(n=1000, pickle_source=True, make_file=True)
