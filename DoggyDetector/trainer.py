@@ -226,6 +226,8 @@ class Trainer():
         # self.mlflow_log_param(param_name, param_value)
         self.mlflow_log_metric(metric_name, metric_value)
 
+        print(f"Results with accuracy= {metric_value} has been uploaded ML Flow")
+
 
         #Save the model as a model.joblib file
         save_model_locally(model)
@@ -261,9 +263,6 @@ class Trainer():
 
     def mlflow_log_metric(self, key, value):
         self.mlflow_client.log_metric(self.mlflow_run.info.run_id, key, value)
-
-
-
 
 
 
