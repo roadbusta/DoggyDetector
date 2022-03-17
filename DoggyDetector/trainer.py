@@ -106,6 +106,9 @@ class Trainer():
         #Save the model as a pickle file
         model_to_pickle(model, make_file= make_file)
 
+        #Save model locally as model.joblib
+        save_model_locally(model)
+
         print("Model Trained")
 
 
@@ -269,5 +272,10 @@ class Trainer():
 
 if __name__ == "__main__":
     trainer = Trainer()
-    trainer.train_GCP_data(n=1000, pickle_source=True, make_file=True)
-    # trainer.train_local_data(n=1000, pickle_source=True, make_file=True)
+
+    #Train model on GCP
+    # trainer.train_GCP_data(n=1000, pickle_source=True, make_file=True)
+
+
+    #Train model locally
+    trainer.train_local_data(n=1000, pickle_source=True, make_file=True)
