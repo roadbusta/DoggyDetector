@@ -1,10 +1,12 @@
 #Specific to this package
 matplotlib
 tensorflow
-tensorflow-gpu
+# tensorflow-gpu
 keras
 google.cloud
 opencv-python
+fastapi
+uvicorn
 
 # packaging
 pip>=22
