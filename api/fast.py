@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import numpy as np
+import cv2
+from google.cloud import storage
+import os
 #from TaxiFareModel import predict
 
 app = FastAPI()
@@ -22,8 +25,27 @@ def index():
 
 
 @app.get("/predict")
-def api_predict(storage):
+def gcp_predict(storage):
     return {"storage location": storage}
+
+
+@app.get("/retrieve")
+def retrieve_image(BUCKET_NAME, BLOB_NAME):
+
+    try:
+        storage_client = storage.Client() #Set the storage_client
+        FILE_PATH = os.path.join(os.getcwd(), 'test') #Set the end file path
+        bucket = storage_client.get_bucket(BUCKET_NAME)
+        blob = bucket.blob(BLOB_NAME)
+        with open(FILE_PATH, 'wb') as f:
+            storage_client.download_blob_to_file(blob,f)
+
+        return True
+
+    except Exception as e:
+        print(e)
+        return False
+
 
 
 
