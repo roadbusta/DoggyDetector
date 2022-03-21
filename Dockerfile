@@ -6,9 +6,12 @@ COPY api /api
 COPY requirements.txt /requirements.txt
 COPY DoggyDetector/ DoggyDetector
 COPY model.joblib/ model.joblib
-# Not sure what the lecture means by loading the trained model
+
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-CMD uvicorn app.simple:app --host 0.0.0.0
+#Trying to set the python environment variable
+RUN export PYTHONPATH="$PYTHONPATH:/DoggyDetector"
+
+CMD uvicorn api.fast:app --host 0.0.0.0 --port $PORT
