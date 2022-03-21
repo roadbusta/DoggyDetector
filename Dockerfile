@@ -1,6 +1,8 @@
 
 # write some code to build your image
-FROM python:3.10.3-buster
+# FROM python:3.10.3-buster
+# Trying a different docker image with inbuilt opencv
+FROM jjanzic/docker-python3-opencv
 
 COPY api /api
 COPY requirements.txt /requirements.txt

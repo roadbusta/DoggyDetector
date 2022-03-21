@@ -7,7 +7,7 @@ from tensorflow import keras
 import os
 import numpy as np
 from keras.applications import inception_v3
-import cv2
+import cv2 #Commenting this out to troubleshoot docker
 import matplotlib.pyplot as plt
 
 

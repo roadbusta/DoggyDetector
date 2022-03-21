@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import numpy as np
-import cv2
+import cv2 #commenting this out to troubleshoot docker
 from google.cloud import storage
 import os
 import pickle
