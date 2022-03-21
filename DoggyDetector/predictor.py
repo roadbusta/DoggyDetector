@@ -53,7 +53,7 @@ class Predictor():
         # Create a list of breeds
         breeds = breed_list()
 
-        print(breeds[dog_breed_predictions[0]])
+        return breeds[dog_breed_predictions[0]]
 
 
 # if __name__ == "__main__":
