@@ -74,7 +74,7 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         predictor = Predictor()
 
         prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
-        print("Prediction made \n")
+
         return prediction
 
 

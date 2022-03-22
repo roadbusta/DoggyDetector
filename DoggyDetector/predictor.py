@@ -16,10 +16,11 @@ class Predictor():
 
         #Load the image
         single_test = cv2.imread(image_path)
-
+        print("Image loaded \n")
 
         # Convert into a list
         _single_test = [single_test]
+
 
         # Resize the image
         IMG_SIZE = 224
@@ -33,7 +34,7 @@ class Predictor():
 
         # Convert the array into a tensor
         _single_test = array_to_tensor(_single_test).astype('float32') / 255
-
+        print("Converted into tensor \n")
         #Do this bottle neck thing
         inception_bottleneck = inception_v3.InceptionV3(weights='imagenet',
                                                         include_top=False,
@@ -48,10 +49,12 @@ class Predictor():
             np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
             for tensor in _single_test
         ]
+        print("Prediction made \n")
         # dog_breed_predictions
 
         # Create a list of breeds
         breeds = breed_list()
+        print("Breed list loaded \n")
 
         return breeds[dog_breed_predictions[0]]
 

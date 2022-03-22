@@ -32,7 +32,7 @@ def category_list(DATADIR= "/raw_data/Images", make_file = True):
     return categories
 
 
-def breed_list(DATADIR = "/raw_data/Images", make_file = True):
+def breed_list(DATADIR = "raw_data/Images", make_file = True):
     """
     Cleans up
     the category list based on the folders in [DATADIR]
