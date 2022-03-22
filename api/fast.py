@@ -28,13 +28,13 @@ def index():
     return {"greeting": "Hello world"}
 
 
-@app.get("/predict")
+@app.get("/retrieve")
 def gcp_predict(storage):
     return {"storage location": storage}
 
 
-@app.get("/retrieve")
-def retrieve_image(BUCKET_NAME, BLOB_NAME):
+@app.get("/predict")
+def predict_breed(BUCKET_NAME, BLOB_NAME):
 
     try:
 
