@@ -41,13 +41,14 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         #Store the image as a temprary file. This may have to be changed to
         # something else in the future where the file is saved
         storage_client = storage.Client() #Set the storage_client
+
         IMAGE_FILE_PATH = os.path.join(os.getcwd(), 'test') #Set the end file path. The image is saved as 'test'
 
         bucket = storage_client.get_bucket(BUCKET_NAME)
         blob = bucket.blob(BLOB_NAME)
         with open(IMAGE_FILE_PATH, 'wb') as f:
             storage_client.download_blob_to_file(blob,f)
-
+        print("Downloaded test image \n")
 
         #Load the model if from pickle
         # BUCKET_PICKLE_LOCATION = "models/Inception/V1/model.joblib"
@@ -58,19 +59,22 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
 
 
         #Load the model if from model.joblib
+
         BUCKET_MODEL_LOCATION = "models/Inception/V1/model.joblib"
         MODEL_FILE_PATH = os.path.join(os.getcwd(), 'model.joblib') #This is where it is saved locally
         file_from_gcp(BUCKET_NAME=BUCKET_NAME,
                       BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
                       DESTINATION_FILE_NAME=MODEL_FILE_PATH)
-
+        print("Downloaded model.joblib \n")
 
         model = joblib.load(MODEL_FILE_PATH)
+        print("Load Model \n")
         # #Run predict
+
         predictor = Predictor()
 
         prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
-
+        print("Prediction made \n")
         return prediction
 
 
