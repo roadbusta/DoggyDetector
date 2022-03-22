@@ -4,7 +4,8 @@ tensorflow
 # tensorflow-gpu
 keras
 google.cloud
-opencv-python
+# opencv-python
+opencv-python-headless #Trying this instead of opencv-python to get it to work in docker
 fastapi
 uvicorn
 
