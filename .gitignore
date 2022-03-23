@@ -5,6 +5,7 @@
 # raw_data/
 # **/*.jpg
 raw_data/Images/**/*.jpg
+*/.jpg
 *.csv
 **/__pycache__/
 .env
