@@ -56,6 +56,12 @@ class Predictor():
         # Create a list of breeds
         print("Current working directory according to predictor.py")
         print(os.getcwd())
+
+        print("Files in current directory according to fast.py")
+        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+        for f in files:
+            print(f)
+
         with open ('breed_list.pickle', 'rb') as fp:
             breeds = pickle.load(fp)
 

@@ -72,6 +72,11 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         # #Run predict
         print("Current working directory according to fast.py")
         print(os.getcwd())
+        print("Files in current directory according to fast.py")
+        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+        for f in files:
+            print(f)
+
         predictor = Predictor()
 
         prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
