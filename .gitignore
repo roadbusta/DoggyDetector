@@ -4,7 +4,7 @@
 .DS_Store
 # raw_data/
 # **/*.jpg
-raw_data/Images/**/*.jpg
+# raw_data/Images/**/*.jpg
 *.jpg
 **/*.jpg
 *.csv
