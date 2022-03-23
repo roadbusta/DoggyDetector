@@ -1,5 +1,6 @@
 #Import relevant libraries
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
@@ -32,7 +33,7 @@ def category_list(DATADIR= "/raw_data/Images", make_file = True):
     return categories
 
 
-def breed_list(DATADIR = "raw_data/Images", make_file = True):
+def breed_list(DATADIR = "/raw_data/Images", make_file = True):
     """
     Cleans up
     the category list based on the folders in [DATADIR]
@@ -54,6 +55,35 @@ def breed_list(DATADIR = "raw_data/Images", make_file = True):
         breeds.append(breed)
 
     return breeds
+
+
+def breed_list_to_pickle(DATADIR="/raw_data/Images", make_file=True):
+    """
+    Cleans up
+    the category list based on the folders in [DATADIR]
+    """
+
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = os.getcwd()
+
+    breeds = []
+    categories = os.listdir(awd + DATADIR)
+    categories.remove(".DS_Store")
+    for category in categories:
+        breed = category[10:]
+        breed = breed.replace("_", " ")
+        breed = breed.title()
+        breeds.append(breed)
+
+    with open('breed_list.pickle', 'wb') as fp:
+        pickle.dump(breeds, fp)
+
+    fp.close()
+
+
+
 
 
 def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="/raw_data/Images", make_file = True ):

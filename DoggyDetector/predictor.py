@@ -9,6 +9,7 @@ import numpy as np
 from keras.applications import inception_v3
 import cv2 #Commenting this out to troubleshoot docker
 import matplotlib.pyplot as plt
+import pickle
 
 
 class Predictor():
@@ -53,7 +54,10 @@ class Predictor():
         # dog_breed_predictions
 
         # Create a list of breeds
-        breeds = breed_list()
+
+        with open ('breed_list.pickle', 'rb') as fp:
+            breeds = pickle.load(fp)
+
         print("Breed list loaded \n")
 
         return breeds[dog_breed_predictions[0]]
