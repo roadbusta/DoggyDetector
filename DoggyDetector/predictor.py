@@ -54,7 +54,7 @@ class Predictor():
         # dog_breed_predictions
 
         # Create a list of breeds
-
+        print(os.getcwd())
         with open ('breed_list.pickle', 'rb') as fp:
             breeds = pickle.load(fp)
 
