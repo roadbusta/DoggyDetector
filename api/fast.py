@@ -70,7 +70,8 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         model = joblib.load(MODEL_FILE_PATH)
         print("Load Model \n")
         # #Run predict
-
+        print("Current working directory according to fast.py")
+        print(os.getcwd())
         predictor = Predictor()
 
         prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)

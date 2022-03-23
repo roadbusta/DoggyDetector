@@ -54,6 +54,7 @@ class Predictor():
         # dog_breed_predictions
 
         # Create a list of breeds
+        print("Current working directory according to predictor.py")
         print(os.getcwd())
         with open ('breed_list.pickle', 'rb') as fp:
             breeds = pickle.load(fp)
