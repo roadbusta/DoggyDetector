@@ -9,5 +9,6 @@
 .env
 *.pkl
 *.pickle
+!api/breed_list.pickle
 ~$*.docx
 # May need to switch on the pickle files in the future
