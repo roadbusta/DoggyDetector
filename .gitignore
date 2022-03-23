@@ -2,10 +2,8 @@
 .coverage
 .ipynb_checkpoints
 .DS_Store
-# raw_data/
-# **/*.jpg
-raw_data/Images/**/*.jpg
-*/.jpg
+
+*.jpg
 *.csv
 **/__pycache__/
 .env
