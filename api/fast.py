@@ -48,7 +48,6 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         blob = bucket.blob(BLOB_NAME)
         with open(IMAGE_FILE_PATH, 'wb') as f:
             storage_client.download_blob_to_file(blob,f)
-        print("Downloaded test image \n")
 
         #Load the model if from pickle
         # BUCKET_PICKLE_LOCATION = "models/Inception/V1/model.joblib"
@@ -65,17 +64,12 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         file_from_gcp(BUCKET_NAME=BUCKET_NAME,
                       BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
                       DESTINATION_FILE_NAME=MODEL_FILE_PATH)
-        print("Downloaded model.joblib \n")
+
 
         model = joblib.load(MODEL_FILE_PATH)
-        print("Load Model \n")
+
         # #Run predict
-        print("Current working directory according to fast.py")
-        print(os.getcwd())
-        print("Files in current directory according to fast.py")
-        files = [f for f in os.listdir('.') if os.path.isfile(f)]
-        for f in files:
-            print(f)
+
 
         predictor = Predictor()
 
