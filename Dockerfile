@@ -9,6 +9,7 @@ COPY requirements.txt /requirements.txt
 COPY DoggyDetector /DoggyDetector
 COPY model.joblib /model.joblib
 COPY breed_list.pickle /breed_list.pickle
+COPY doggy-detector-2022-c42f18ed1a2f.json /credentials.json
 
 
 
