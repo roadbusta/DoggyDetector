@@ -9,6 +9,7 @@ import numpy as np
 from keras.applications import inception_v3
 import cv2 #Commenting this out to troubleshoot docker
 import matplotlib.pyplot as plt
+import pickle
 
 
 class Predictor():
@@ -20,6 +21,7 @@ class Predictor():
 
         # Convert into a list
         _single_test = [single_test]
+
 
         # Resize the image
         IMG_SIZE = 224
@@ -48,10 +50,16 @@ class Predictor():
             np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
             for tensor in _single_test
         ]
+
         # dog_breed_predictions
 
         # Create a list of breeds
-        breeds = breed_list()
+
+
+        with open ('breed_list.pickle', 'rb') as fp:
+            breeds = pickle.load(fp)
+
+
 
         return breeds[dog_breed_predictions[0]]
 

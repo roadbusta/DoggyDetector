@@ -8,6 +8,7 @@ COPY api /api
 COPY requirements.txt /requirements.txt
 COPY DoggyDetector /DoggyDetector
 COPY model.joblib /model.joblib
+COPY breed_list.pickle /breed_list.pickle
 
 
 

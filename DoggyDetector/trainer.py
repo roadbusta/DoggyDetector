@@ -1,5 +1,5 @@
 # Import relevant custom utilities
-from DoggyDetector.data import save_model_locally, storage_upload, category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle, file_from_gcp, file_to_gcp, pickle_from_gcp
+from DoggyDetector.data import breed_list_to_pickle, save_model_locally, storage_upload, category_list, create_training_data, data_from_pickle, model_to_pickle, data_to_pickle, file_from_gcp, file_to_gcp, pickle_from_gcp
 from DoggyDetector.model import init_model
 from DoggyDetector.utils import array_to_tensor
 
@@ -29,6 +29,9 @@ class Trainer():
         n is the number of images you want to create the model based on
         set pickle to True if the data is already in a pickle file
         """
+        # Create a pickle breed list locally
+        breed_list_to_pickle()
+
         #Load the data for pickle if it exists, otherwise from the raw data
         if pickle_source:
             X, y = data_from_pickle(make_file= make_file)

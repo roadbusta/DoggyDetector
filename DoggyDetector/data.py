@@ -1,10 +1,11 @@
 #Import relevant libraries
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import cv2 #Commenting this out to troubleshoot docker
+import cv2
 
 import random
 import pickle
@@ -20,9 +21,10 @@ def category_list(DATADIR= "/raw_data/Images", make_file = True):
     Creates a category list based on the folders in [DATADIR]
     """
 
+
     #Apply makefile trigger
     if make_file:
-        categories = os.listdir( "."+ DATADIR)
+        categories = os.listdir(os.path.join(os.getcwd(), DATADIR)) ## New Code
     else:
         categories = os.listdir(".." + DATADIR)
 
@@ -40,7 +42,7 @@ def breed_list(DATADIR = "/raw_data/Images", make_file = True):
     #Apply makefile trigger to absolute working directory
     awd = ".."
     if make_file:
-        awd = "."
+        awd = os.getcwd()
 
 
     breeds = []
@@ -53,6 +55,35 @@ def breed_list(DATADIR = "/raw_data/Images", make_file = True):
         breeds.append(breed)
 
     return breeds
+
+
+def breed_list_to_pickle(DATADIR="/raw_data/Images", make_file=True):
+    """
+    Cleans up
+    the category list based on the folders in [DATADIR]
+    """
+
+    #Apply makefile trigger to absolute working directory
+    awd = ".."
+    if make_file:
+        awd = os.getcwd()
+
+    breeds = []
+    categories = os.listdir(awd + DATADIR)
+    categories.remove(".DS_Store")
+    for category in categories:
+        breed = category[10:]
+        breed = breed.replace("_", " ")
+        breed = breed.title()
+        breeds.append(breed)
+
+    with open('breed_list.pickle', 'wb') as fp:
+        pickle.dump(breeds, fp)
+
+    fp.close()
+
+
+
 
 
 def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="/raw_data/Images", make_file = True ):
@@ -70,7 +101,7 @@ def create_training_data(CATEGORIES, IMG_SIZE = 224, DATADIR ="/raw_data/Images"
     #Apply makefile trigger to absolute working directory
     awd = ".."
     if make_file:
-        awd = "."
+        awd = os.getcwd()
 
 
     X = []
@@ -111,7 +142,7 @@ def data_to_pickle(X, y, pickle_path="/data/Pickle Files/", make_file = True):
     #Apply makefile trigger to absolute working directory
     awd = ".."
     if make_file:
-        awd = "."
+        awd = os.getcwd()
 
 
     pickle_out = open(awd + "/DoggyDetector" + pickle_path + "X.pickle", "wb")
@@ -131,7 +162,7 @@ def data_from_pickle(pickle_path="/data/Pickle Files/", make_file = True):
     #Apply makefile trigger to absolute working directory
     awd = ".."
     if make_file:
-        awd = "."
+        awd = os.getcwd()
 
 
     #Load the pickle files
@@ -207,7 +238,7 @@ def model_to_pickle(model, pickle_path="/data/Pickle Files/", make_file = True):
     #Apply makefile trigger to absolute working directory
     awd = ".."
     if make_file:
-        awd = "."
+        awd = os.getcwd()
 
 
     pickle_out = open(awd + "/DoggyDetector" + pickle_path + "model.pickle", "wb")
@@ -223,7 +254,7 @@ def model_from_pickle(pickle_path="/data/Pickle Files/", make_file = True):
     #Apply makefile trigger to absolute working directory
     awd = ".."
     if make_file:
-        awd = "."
+        awd = os.getcwd()
 
     #Load the pickle files
     pickle_in = open(awd + "/DoggyDetector" + pickle_path + "model.pickle",
