@@ -18,5 +18,6 @@ RUN pip3 install -r requirements.txt
 
 #Trying to set the python environment variable
 RUN export PYTHONPATH="$PYTHONPATH:/DoggyDetector"
+RUN export GOOGLE_APPLICATION_CREDENTIALS= "/credentials.json"
 
 CMD uvicorn api.fast:app --host 0.0.0.0 --port $PORT
