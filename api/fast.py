@@ -11,6 +11,7 @@ import joblib
 from DoggyDetector.predictor import Predictor
 #from TaxiFareModel import predict
 
+
 app = FastAPI()
 
 app.add_middleware(
@@ -21,6 +22,8 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+#Set environmental variable
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "doggy-detector-2022-c42f18ed1a2f.json"
 
 ##Creating a root endpoint that will welcome the developers using our API
 @app.get("/")

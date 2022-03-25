@@ -9,7 +9,7 @@ COPY requirements.txt /requirements.txt
 COPY DoggyDetector /DoggyDetector
 COPY model.joblib /model.joblib
 COPY breed_list.pickle /breed_list.pickle
-COPY doggy-detector-2022-c42f18ed1a2f.json /credentials.json
+COPY doggy-detector-2022-c42f18ed1a2f.json /doggy-detector-2022-c42f18ed1a2f.json
 
 
 
@@ -18,6 +18,6 @@ RUN pip3 install -r requirements.txt
 
 #Trying to set the python environment variable
 RUN export PYTHONPATH="$PYTHONPATH:/DoggyDetector"
-RUN export GOOGLE_APPLICATION_CREDENTIALS= "/credentials.json"
+
 
 CMD uvicorn api.fast:app --host 0.0.0.0 --port $PORT
