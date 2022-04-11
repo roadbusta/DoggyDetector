@@ -11,6 +11,7 @@ import joblib
 from DoggyDetector.predictor import Predictor
 #from TaxiFareModel import predict
 
+
 app = FastAPI()
 
 app.add_middleware(
@@ -21,6 +22,8 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+#Set environmental variable
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "doggy-detector-2022-c42f18ed1a2f.json"
 
 ##Creating a root endpoint that will welcome the developers using our API
 @app.get("/")
@@ -49,7 +52,8 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         with open(IMAGE_FILE_PATH, 'wb') as f:
             storage_client.download_blob_to_file(blob,f)
 
-        #Load the model if from pickle
+
+        # # Load the model if from pickle
         # BUCKET_PICKLE_LOCATION = "models/Inception/V1/model.joblib"
         # model_pickle = pickle_from_gcp(BUCKET_NAME= BUCKET_NAME,
         #                                BUCKET_PICKLE_LOCATION= BUCKET_PICKLE_LOCATION)
@@ -57,27 +61,28 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         # model = pickle.loads(model_pickle)
 
 
-        #Load the model if from model.joblib
+        # Load the model if from model.joblib
 
         BUCKET_MODEL_LOCATION = "models/Inception/V1/model.joblib"
         MODEL_FILE_PATH = os.path.join(os.getcwd(), 'model.joblib') #This is where it is saved locally
         file_from_gcp(BUCKET_NAME=BUCKET_NAME,
-                      BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
-                      DESTINATION_FILE_NAME=MODEL_FILE_PATH)
+        BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
+        DESTINATION_FILE_NAME=MODEL_FILE_PATH)
 
 
         model = joblib.load(MODEL_FILE_PATH)
 
-        # #Run predict
+        #Run predict
 
 
         predictor = Predictor()
 
         prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
 
-        return prediction
 
 
+        return {"outcome": "successfully loaded object",
+                "prediction" :  prediction}
 
 
     except Exception as e:
