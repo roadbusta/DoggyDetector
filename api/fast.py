@@ -53,36 +53,44 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
             storage_client.download_blob_to_file(blob,f)
 
 
-        # # Load the model if from pickle
-        # BUCKET_PICKLE_LOCATION = "models/Inception/V1/model.joblib"
-        # model_pickle = pickle_from_gcp(BUCKET_NAME= BUCKET_NAME,
-        #                                BUCKET_PICKLE_LOCATION= BUCKET_PICKLE_LOCATION)
-
-        # model = pickle.loads(model_pickle)
+        prediction = "Image successfully loaded"
 
 
-        # Load the model if from model.joblib
+        # # # Load the model if from pickle
+        # # BUCKET_PICKLE_LOCATION = "models/Inception/V1/model.joblib"
+        # # model_pickle = pickle_from_gcp(BUCKET_NAME= BUCKET_NAME,
+        # #                                BUCKET_PICKLE_LOCATION= BUCKET_PICKLE_LOCATION)
 
-        BUCKET_MODEL_LOCATION = "models/Inception/V1/model.joblib"
-        MODEL_FILE_PATH = os.path.join(os.getcwd(), 'model.joblib') #This is where it is saved locally
-        file_from_gcp(BUCKET_NAME=BUCKET_NAME,
-        BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
-        DESTINATION_FILE_NAME=MODEL_FILE_PATH)
-
-
-        model = joblib.load(MODEL_FILE_PATH)
-
-        #Run predict
+        # # model = pickle.loads(model_pickle)
 
 
-        predictor = Predictor()
+        # # Load the model if from model.joblib
 
-        prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
+        # BUCKET_MODEL_LOCATION = "models/Inception/V1/model.joblib"
+        # MODEL_FILE_PATH = os.path.join(os.getcwd(), 'model.joblib') #This is where it is saved locally
+        # file_from_gcp(BUCKET_NAME=BUCKET_NAME,
+        # BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
+        # DESTINATION_FILE_NAME=MODEL_FILE_PATH)
+
+
+        # model = joblib.load(MODEL_FILE_PATH)
+
+        # #Run predict
+
+
+        # predictor = Predictor()
+
+        # prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
 
 
 
-        return {"outcome": "successfully loaded object",
-                "prediction" :  prediction}
+        # return {"outcome": "successfully loaded object",
+        #         "prediction" :  prediction}
+
+        return {
+            "outcome": "successfully loaded object",
+            "prediction": prediction
+        }
 
 
     except Exception as e:
