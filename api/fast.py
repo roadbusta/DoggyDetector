@@ -23,7 +23,8 @@ app.add_middleware(
 )
 
 #Set environmental variable
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "doggy-detector-2022-c42f18ed1a2f.json"
+os.environ[
+    'GOOGLE_APPLICATION_CREDENTIALS'] = "doggy-detector-2022-dff1082f34a6.json"
 
 ##Creating a root endpoint that will welcome the developers using our API
 @app.get("/")
@@ -56,41 +57,41 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
         prediction = "Image successfully loaded"
 
 
-        # # # Load the model if from pickle
-        # # BUCKET_PICKLE_LOCATION = "models/Inception/V1/model.joblib"
-        # # model_pickle = pickle_from_gcp(BUCKET_NAME= BUCKET_NAME,
-        # #                                BUCKET_PICKLE_LOCATION= BUCKET_PICKLE_LOCATION)
+        # # Load the model if from pickle
+        # BUCKET_PICKLE_LOCATION = "models/Inception/V1/model.joblib"
+        # model_pickle = pickle_from_gcp(BUCKET_NAME= BUCKET_NAME,
+        #                                BUCKET_PICKLE_LOCATION= BUCKET_PICKLE_LOCATION)
 
-        # # model = pickle.loads(model_pickle)
-
-
-        # # Load the model if from model.joblib
-
-        # BUCKET_MODEL_LOCATION = "models/Inception/V1/model.joblib"
-        # MODEL_FILE_PATH = os.path.join(os.getcwd(), 'model.joblib') #This is where it is saved locally
-        # file_from_gcp(BUCKET_NAME=BUCKET_NAME,
-        # BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
-        # DESTINATION_FILE_NAME=MODEL_FILE_PATH)
+        # model = pickle.loads(model_pickle)
 
 
-        # model = joblib.load(MODEL_FILE_PATH)
+        # Load the model if from model.joblib
 
-        # #Run predict
-
-
-        # predictor = Predictor()
-
-        # prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
-
+        BUCKET_MODEL_LOCATION = "models/Inception/V1/model.joblib"
+        MODEL_FILE_PATH = os.path.join(os.getcwd(), 'model.joblib') #This is where it is saved locally
+        file_from_gcp(BUCKET_NAME=BUCKET_NAME,
+        BUCKET_PICKLE_LOCATION=BUCKET_MODEL_LOCATION,
+        DESTINATION_FILE_NAME=MODEL_FILE_PATH)
 
 
-        # return {"outcome": "successfully loaded object",
-        #         "prediction" :  prediction}
+        model = joblib.load(MODEL_FILE_PATH)
 
-        return {
-            "outcome": "successfully loaded object",
-            "prediction": prediction
-        }
+        #Run predict
+
+
+        predictor = Predictor()
+
+        prediction = predictor.predict(image_path = IMAGE_FILE_PATH, model = model)
+
+
+
+        return {"outcome": "successfully loaded object",
+                "prediction" :  prediction}
+
+        # return {
+        #     "outcome": "successfully loaded object",
+        #     "prediction": prediction
+        # }
 
 
     except Exception as e:
