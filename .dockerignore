@@ -1,0 +1,18 @@
+/raw_data/
+*.egg-info
+.coverage
+.ipynb_checkpoints
+.DS_Store
+
+*.jpg
+*.csv
+**/__pycache__/
+.env
+*.pkl
+*.pickle
+!api/breed_list.pickle
+!breed_list.pickle
+~$*.docx
+# May need to switch on the pickle files in the future
+
+/DoggyDetector/data
