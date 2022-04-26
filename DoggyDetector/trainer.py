@@ -17,7 +17,7 @@ from mlflow.tracking import MlflowClient
 
 
 
-MLFLOW_URI = "https://mlflow.lewagon.co/"
+MLFLOW_URI = "https://mlflow.lewagon.ai/"
 EXPERIMENT_NAME = "[AUS] [MEL] [roadbusta] inception + v1"
 
 class Trainer():
@@ -43,6 +43,7 @@ class Trainer():
         #Create a smaller sample size
         X_small = X[:n]
         y_small = y[:n]
+        print(f"Sample size is {len(y_small)}")
 
         # Transform X and y as required
         X_in = np.array(X_small)
@@ -69,9 +70,9 @@ class Trainer():
 
         #Do the bottleneck thing
         inception_bottleneck=inception_v3.InceptionV3(weights='imagenet', include_top=False, pooling='avg')
-        train_i_bf = inception_bottleneck.predict(train_tensors, batch_size=32, verbose=0)
-        val_i_bf = inception_bottleneck.predict(val_tensors, batch_size=32, verbose=0)
-        test_i_bf = inception_bottleneck.predict(test_tensors, batch_size=32, verbose=0)
+        train_i_bf = inception_bottleneck.predict(train_tensors, batch_size=32, verbose=1)
+        val_i_bf = inception_bottleneck.predict(val_tensors, batch_size=32, verbose=1)
+        test_i_bf = inception_bottleneck.predict(test_tensors, batch_size=32, verbose=1)
 
         batch_size=32
         epochs=50
@@ -84,20 +85,20 @@ class Trainer():
                 epochs=epochs,
                 batch_size=batch_size,
                 validation_data=(val_i_bf, y_val),
-                verbose = 0)
+                verbose = 2)
 
         #Evaluate the model- not sure if this is needed
         (eval_loss, eval_accuracy) = model.evaluate(val_i_bf,
                                                     y_val,
                                                     batch_size=batch_size,
-                                                    verbose=0)
+                                                    verbose=2)
 
 
 
         MODEL_NAME = "Inception"
-        MODEL_VERSION = "V1"
+        MODEL_VERSION = "V2"
 
-        self.experiment_name = "[AUS] [MEL] [roadbusta] inception + v1"
+        self.experiment_name = "[AUS] [MEL] [roadbusta] inception + v2"
 
 
         metric_name = "accuracy"
@@ -192,14 +193,11 @@ class Trainer():
                                                         include_top=False,
                                                         pooling='avg')
         train_i_bf = inception_bottleneck.predict(train_tensors,
-                                                  batch_size=32,
-                                                  verbose=0)
+                                                  batch_size=32)
         val_i_bf = inception_bottleneck.predict(val_tensors,
-                                                batch_size=32,
-                                                verbose=0)
+                                                batch_size=32)
         test_i_bf = inception_bottleneck.predict(test_tensors,
-                                                 batch_size=32,
-                                                 verbose=0)
+                                                 batch_size=32)
 
         batch_size = 32
         epochs = 50
@@ -281,4 +279,4 @@ if __name__ == "__main__":
 
 
     #Train model locally
-    trainer.train_local_data(n=1000, pickle_source=True, make_file=True)
+    trainer.train_local_data(pickle_source=True, make_file=True)
