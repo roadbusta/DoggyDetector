@@ -45,39 +45,52 @@ class Predictor():
                                                     batch_size=32,
                                                     verbose=0)
 
+        # Create a list of breeds
+
+
+        with open ('breed_list.pickle', 'rb') as fp:
+            breeds = pickle.load(fp)
+
         #Perform prediction - This is list comprehension
         dog_breed_predictions = [
             np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
             for tensor in _single_test
         ]
 
-        print("Print tensors:")
-        for tensor in _single_test:
-            print(tensor)
+        #Print the indicies of the top 2 predictions
+        a = model.predict(np.expand_dims(_single_test[0], axis=0))[0]
+        ind = np.argpartition(a, -4)[-4:]
 
-        print("Print expanded tensors")
-        for tensor in _single_test:
-            print(np.expand_dims(tensor, axis=0))
+        print("Indices :", ind)
 
-        print("Print model predictions")
-        # This appears to be the array that contains predictions
-        for tensor in _single_test:
-            print(model.predict(np.expand_dims(tensor, axis=0)))
+        #Sort the indices from biggest to smallest
+        sorted_a = ind[np.argsort(a[ind])]
+        print("Sorted array : ", sorted_a)
 
-        print("Print model predictions as a number")
-        for tensor in _single_test:
-            np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
+        # Find the top predictions
+        for index in sorted_a:
+            print(f"Index: {index} . Likelihood: {a[index]} . Breed: {breeds[index]} ")
 
-        print("Print length of predictions")
-        for tensor in _single_test:
-            print(len(model.predict(np.expand_dims(tensor, axis=0))[0]))
 
-        print("Prediction certainty")
-        for tensor in _single_test:
-            prediction_certainty = model.predict(np.expand_dims(tensor, axis=0))[0]
-            prediction_index = np.argmax(
-                model.predict(np.expand_dims(tensor, axis=0)))
-            print(prediction_certainty[prediction_index])
+        # print("Print model predictions")
+        # # This appears to be the array that contains predictions
+        # for tensor in _single_test:
+        #     print(model.predict(np.expand_dims(tensor, axis=0)))
+
+        # print("Print model predictions as a number")
+        # for tensor in _single_test:
+        #     np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
+
+        # print("Print length of predictions")
+        # for tensor in _single_test:
+        #     print(len(model.predict(np.expand_dims(tensor, axis=0))[0]))
+
+        # print("Prediction certainty")
+        # for tensor in _single_test:
+        #     prediction_certainty = model.predict(np.expand_dims(tensor, axis=0))[0]
+        #     prediction_index = np.argmax(
+        #         model.predict(np.expand_dims(tensor, axis=0)))
+        #     print(prediction_certainty[prediction_index])
 
 
 
@@ -93,12 +106,13 @@ class Predictor():
 
         # return breeds[dog_breed_predictions[0]]
 
-        return dog_breed_predictions
+        return [(a[sorted_a[-1]], breeds[sorted_a[-1]]),
+                (a[sorted_a[-2]],breeds[sorted_a[-2]])]  #Returns top two predictions
 
 
 if __name__ == "__main__":
     model = model_from_pickle()
-    path = "/Users/joe/Desktop/test.png"
+    path = "/Users/joe/Desktop/test.jpeg"
 
     predictor = Predictor()
 
