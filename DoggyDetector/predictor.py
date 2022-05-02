@@ -45,11 +45,41 @@ class Predictor():
                                                     batch_size=32,
                                                     verbose=0)
 
-        #Perform prediction
+        #Perform prediction - This is list comprehension
         dog_breed_predictions = [
             np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
             for tensor in _single_test
         ]
+
+        print("Print tensors:")
+        for tensor in _single_test:
+            print(tensor)
+
+        print("Print expanded tensors")
+        for tensor in _single_test:
+            print(np.expand_dims(tensor, axis=0))
+
+        print("Print model predictions")
+        # This appears to be the array that contains predictions
+        for tensor in _single_test:
+            print(model.predict(np.expand_dims(tensor, axis=0)))
+
+        print("Print model predictions as a number")
+        for tensor in _single_test:
+            np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
+
+        print("Print length of predictions")
+        for tensor in _single_test:
+            print(len(model.predict(np.expand_dims(tensor, axis=0))[0]))
+
+        print("Prediction certainty")
+        for tensor in _single_test:
+            prediction_certainty = model.predict(np.expand_dims(tensor, axis=0))[0]
+            prediction_index = np.argmax(
+                model.predict(np.expand_dims(tensor, axis=0)))
+            print(prediction_certainty[prediction_index])
+
+
 
         # dog_breed_predictions
 
