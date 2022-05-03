@@ -60,54 +60,22 @@ class Predictor():
         #Print the indicies of the top 2 predictions
         a = model.predict(np.expand_dims(_single_test[0], axis=0))[0]
         ind = np.argpartition(a, -4)[-4:]
-
-        print("Indices :", ind)
+        # print("Indices :", ind)
 
         #Sort the indices from biggest to smallest
         sorted_a = ind[np.argsort(a[ind])]
-        print("Sorted array : ", sorted_a)
+        # print("Sorted array : ", sorted_a)
 
-        # Find the top predictions
-        for index in sorted_a:
-            print(f"Index: {index} . Likelihood: {a[index]} . Breed: {breeds[index]} ")
-
-
-        # print("Print model predictions")
-        # # This appears to be the array that contains predictions
-        # for tensor in _single_test:
-        #     print(model.predict(np.expand_dims(tensor, axis=0)))
-
-        # print("Print model predictions as a number")
-        # for tensor in _single_test:
-        #     np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
-
-        # print("Print length of predictions")
-        # for tensor in _single_test:
-        #     print(len(model.predict(np.expand_dims(tensor, axis=0))[0]))
-
-        # print("Prediction certainty")
-        # for tensor in _single_test:
-        #     prediction_certainty = model.predict(np.expand_dims(tensor, axis=0))[0]
-        #     prediction_index = np.argmax(
-        #         model.predict(np.expand_dims(tensor, axis=0)))
-        #     print(prediction_certainty[prediction_index])
-
-
-
-        # dog_breed_predictions
-
-        # Create a list of breeds
-
-
-        with open ('breed_list.pickle', 'rb') as fp:
-            breeds = pickle.load(fp)
-
+        # # Find the top predictions
+        # for index in sorted_a:
+        #     print(f"Index: {index} . Likelihood: {a[index]} . Breed: {breeds[index]} ")
 
 
         # return breeds[dog_breed_predictions[0]]
-
-        return [(a[sorted_a[-1]], breeds[sorted_a[-1]]),
-                (a[sorted_a[-2]],breeds[sorted_a[-2]])]  #Returns top two predictions
+        first_prediction = (a[sorted_a[-1]], breeds[sorted_a[-1]])
+        second_prediction = (a[sorted_a[-2]], breeds[sorted_a[-2]])
+        return [ first_prediction, second_prediction
+                ]  #Returns top two predictions as tuples
 
 
 if __name__ == "__main__":

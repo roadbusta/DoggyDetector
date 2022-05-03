@@ -86,12 +86,8 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
 
 
         return {"outcome": "successfully loaded object",
-                "prediction" :  prediction}
+                "predition" :  prediction}
 
-        # return {
-        #     "outcome": "successfully loaded object",
-        #     "prediction": prediction
-        # }
 
 
     except Exception as e:

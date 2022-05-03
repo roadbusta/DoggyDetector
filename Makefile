@@ -65,8 +65,10 @@ PACKAGE_NAME=DoggyDetector
 #the main code file of the package for the training
 FILENAME = trainer
 
-run_locally:
+train_locally:
 	@python -m ${PACKAGE_NAME}.${FILENAME}
+
+
 
 # ----------------------------------
 #      Predict Locally

@@ -279,5 +279,5 @@ if __name__ == "__main__":
 
 
     #Train model locally
-    trainer.train_local_data(n = 1000, pickle_source=True, make_file=True)
-    # trainer.train_local_data(pickle_source=True, make_file=True)
+    # trainer.train_local_data(n = 1000, pickle_source=True, make_file=True)
+    trainer.train_local_data(pickle_source=True, make_file=True)
