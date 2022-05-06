@@ -72,10 +72,11 @@ class Predictor():
 
 
         # return breeds[dog_breed_predictions[0]]
-        first_prediction = (a[sorted_a[-1]], breeds[sorted_a[-1]])
-        second_prediction = (a[sorted_a[-2]], breeds[sorted_a[-2]])
+        first_prediction = (float(a[sorted_a[-1]]), breeds[sorted_a[-1]])
+        second_prediction = (float(a[sorted_a[-2]]), breeds[sorted_a[-2]])
         return [ first_prediction, second_prediction
                 ]  #Returns top two predictions as tuples
+
 
 
 if __name__ == "__main__":

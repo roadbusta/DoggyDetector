@@ -86,7 +86,7 @@ def predict_breed(BUCKET_NAME, BLOB_NAME):
 
 
         return {"outcome": "successfully loaded object",
-                "predition" :  prediction}
+                "prediction" :  prediction}
 
 
 
