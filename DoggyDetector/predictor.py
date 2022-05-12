@@ -45,29 +45,45 @@ class Predictor():
                                                     batch_size=32,
                                                     verbose=0)
 
-        #Perform prediction
-        dog_breed_predictions = [
-            np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
-            for tensor in _single_test
-        ]
-
-        # dog_breed_predictions
-
         # Create a list of breeds
 
 
         with open ('breed_list.pickle', 'rb') as fp:
             breeds = pickle.load(fp)
 
+        #Perform prediction - This is list comprehension
+        dog_breed_predictions = [
+            np.argmax(model.predict(np.expand_dims(tensor, axis=0)))
+            for tensor in _single_test
+        ]
+
+        #Print the indicies of the top 2 predictions
+        a = model.predict(np.expand_dims(_single_test[0], axis=0))[0]
+        ind = np.argpartition(a, -4)[-4:]
+        # print("Indices :", ind)
+
+        #Sort the indices from biggest to smallest
+        sorted_a = ind[np.argsort(a[ind])]
+        # print("Sorted array : ", sorted_a)
+
+        # # Find the top predictions
+        # for index in sorted_a:
+        #     print(f"Index: {index} . Likelihood: {a[index]} . Breed: {breeds[index]} ")
 
 
-        return breeds[dog_breed_predictions[0]]
+        # return breeds[dog_breed_predictions[0]]
+        first_prediction = (float(a[sorted_a[-1]]), breeds[sorted_a[-1]])
+        second_prediction = (float(a[sorted_a[-2]]), breeds[sorted_a[-2]])
+        return [ first_prediction, second_prediction
+                ]  #Returns top two predictions as tuples
 
 
-# if __name__ == "__main__":
-#     model = model_from_pickle()
-#     path = "/Users/joe/Desktop/BREED Hero Desktop_0113_french_bulldog.webp"
 
-#     predictor = Predictor()
+if __name__ == "__main__":
+    model = model_from_pickle()
+    path = "/Users/joe/Desktop/test.jpeg"
 
-#     predictor.predict(image_path = path, model = model)
+    predictor = Predictor()
+
+    prediction = predictor.predict(image_path = path, model = model)
+    print(prediction)

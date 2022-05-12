@@ -13,3 +13,6 @@
 ~$*.docx
 # May need to switch on the pickle files in the future
 !breed_list.pickle
+
+#Need to allow .json if looking to rebuild and redeploy
+*.json

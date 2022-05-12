@@ -56,7 +56,7 @@ pypi:
 
 
 # ----------------------------------
-#      Run Locally
+#      Train Locally
 # ----------------------------------
 
 # the name of the package inside of our packaged project containing the code that will handle the data and train the mode
@@ -65,7 +65,22 @@ PACKAGE_NAME=DoggyDetector
 #the main code file of the package for the training
 FILENAME = trainer
 
-run_locally:
+train_locally:
+	@python -m ${PACKAGE_NAME}.${FILENAME}
+
+
+
+# ----------------------------------
+#      Predict Locally
+# ----------------------------------
+
+# the name of the package inside of our packaged project containing the code that will handle the data and train the mode
+PACKAGE_NAME=DoggyDetector
+
+#the main code file of the package for the training
+FILENAME = predictor
+
+predict_locally:
 	@python -m ${PACKAGE_NAME}.${FILENAME}
 
 
