@@ -1,12 +1,20 @@
 # Data analysis
 - Document here the project: DoggyDetector
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+- Description: Takes in a single image and returns the prediction
+- Data Source: Stanford Dog Dataset
+- Model: Inception V3 (transfer learning)
 
 Please document the project the better you can.
 
+Workflow:
+- Clone project
+- Train machine learning model 
+- Containerise and deploy
+
 # Startup the project
+
+You will need access to Google Cloud Platform, Docker and Heroku to clone and deploy this project.
+
 
 The initial setup.
 
@@ -72,3 +80,17 @@ mkdir tmp
 cd tmp
 DoggyDetector-run
 ```
+Create API using uvicorn
+
+Test API
+
+Deploy to docker locally
+
+Deploy to GCP container registry
+
+Test access to GCP
+
+Deploy DoggyDetector Website to heroku
+
+Some troubleshooting and FAQ
+
