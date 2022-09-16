@@ -80,17 +80,4 @@ mkdir tmp
 cd tmp
 DoggyDetector-run
 ```
-Create API using uvicorn
-
-Test API
-
-Deploy to docker locally
-
-Deploy to GCP container registry
-
-Test access to GCP
-
-Deploy DoggyDetector Website to heroku
-
-Some troubleshooting and FAQ
 
